@@ -2,14 +2,14 @@ const path = require('path');
 
 module.exports = {
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.js'],
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     compress: true,
     port: 3000,
   },
-  entry: path.resolve(__dirname, 'src', 'index.tsx'),
+  entry: path.resolve(__dirname, 'src', 'index.js'),
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
@@ -21,11 +21,11 @@ module.exports = {
         exclude: /node_modules/,
         loader: ['babel-loader', 'eslint-loader'],
       },
-      {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
-        use: [{ loader: 'ts-loader' }, { loader: 'eslint-loader' }],
-      },
+      // {
+      //   test: /\.ts(x?)$/,
+      //   exclude: /node_modules/,
+      //   use: [{ loader: 'ts-loader' }, { loader: 'eslint-loader' }],
+      // },
       {
         test: /\.css$/,
         use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
@@ -39,7 +39,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|svg|jpg|gif)$/i,
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
         use: ['file-loader'],
         include: path.join(__dirname, 'src/assets/')
       },
