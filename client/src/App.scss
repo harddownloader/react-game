@@ -1,0 +1,259 @@
+// $spaceBg: 'assets/images/space_bg1.jpeg';
+
+$sprite: 'assets/images/sprite.jpg';
+$space_bg: 'assets/images/space-bg.jpg';
+$enemy: 'assets/images/enemy.png';
+
+$planet1: 'assets/images/planet1.png';
+$planet2: 'assets/images/planet2.png';
+
+$planet3: 'assets/images/planet3.png';
+
+$asteroid1: 'assets/images/asteroid1.png';
+$space_ship: 'assets/images/spaceship3.png';
+
+// html,2121
+// body {
+//   // for canvas
+//   width: 100%;
+//   height: 100%;
+//   margin: 0;
+//   padding: 0;
+  
+//   color: #fff;
+//   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// #root {
+//   width: 100%;
+//   height: 100%;
+// }
+
+// .container.space{
+//   width: 100%;
+//   height: 100%;
+//   background-image: url($spaceBg);
+// }
+
+* {
+	margin:0;
+	padding: 0;
+}
+
+body {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;	
+	overflow: hidden;
+}
+
+// фон
+.sky {
+	position: absolute;
+	top: -630px; left: 0; bottom: 0; right: 0;
+	width: 100%;
+	opacity: 1;
+	background: url($space_bg) repeat;
+	-webkit-animation: backdrop_roll linear 100s infinite;
+	-moz-animation: backdrop_roll linear 100s infinite;
+	-ms-animation: backdrop_roll linear 100s infinite;
+	-o-animation: backdrop_roll linear 100s infinite;
+	animation: backdrop_roll linear 100s infinite;
+}
+
+@-webkit-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@-moz-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@-ms-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@-o-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+
+// очки игрока
+#score {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	color: #fff;
+	font-size: 20px;
+}
+
+// жизни
+#lifes {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	color: #fff;
+	font-size: 20px;
+}
+
+#life{
+	width: 52px;
+  height: 44px;
+  background: url($sprite) 114px -34px;
+}
+
+// здоровье
+.life-bar-cont {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	width: 20px;
+	height: 220px;
+	background: #2f2828;
+}
+
+.life-bar {
+	position: absolute;
+	width: 10px;
+	height: 200px;
+	top: 10px;
+	right: 5px;
+	background: #ccc;
+	z-index: 9999px
+}
+
+.life-bar .inside-bar {	
+	position: absolute;
+	width: 100%;
+	right: 0;
+	bottom:0;
+	background: #38862a;
+}
+// /здоровье
+
+// карабль
+#ship {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	top: 70%;
+	left: 50%;
+	margin-left: -50px;
+	background: url($space_ship) no-repeat 50% 50%;
+	background-size: contain;
+	z-index: 1000;
+}
+
+.explode {
+	position: absolute;
+	top:  50%;
+	left: 50%;
+	width: 120px;
+	height: 180px;
+	z-index: 2000;
+}
+
+.palyerExplode {
+	position: absolute;
+	width: 70px;
+	height: 100px;
+	top:  50%;
+	left: 50%;
+	z-index: 2000;
+}
+
+.palyerExplode img, .explode img {
+	width: 100%;
+	height: auto;
+}
+
+.bullet {
+	position: absolute;
+	width: 3px;
+	height: 10px;
+	
+	border-radius: 5px;
+	
+	margin-left: -5px;
+	background: red;
+	z-index: 1000;
+}
+
+.enemy-bullet {
+	position: absolute;
+	width: 5px;
+	height: 5px;	
+	border-radius: 3px;
+	background: green;
+	z-index: 900;
+}
+
+.enemy {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	top: -50px;
+	left: 50%;
+	background: url($enemy) no-repeat center;
+	z-index: 950;
+}
+
+.small-star {
+	position: absolute;
+	width: 2px;
+	height: 2px;
+	border-radius: 1px;	
+	left: 0; top: -50px;
+	background: #fff;
+	z-index: 1;
+}
+
+.planet {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;	
+	left: 0; top: -50px;
+	background: linear-gradient(to right, #2d2d2d 20%,#ccc 100%);
+	z-index: 10;
+}
+
+.moon {
+	position: absolute;
+	width: 500px;
+	height: 500px;
+	border-radius: 250px;	
+	left: 0; top: -500px;
+	z-index: 100;
+	background: url($planet1) no-repeat center; 
+}
+
+.huge-planet {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	border-radius: 75px;	
+	left: 0; top: -200px;
+	background: url($planet2) no-repeat;
+	z-index: 50;
+}
+
+.exp-planet {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	border-radius: 75px;	
+	left: 0; top: -200px;
+	background: url($planet3) no-repeat;
+	z-index: 50;
+}
+
+
+.asteroid {
+	position: absolute;
+	width: 100px;
+	height: 65px;
+	left: 0; top: -65px;
+	z-index: 100;
+	background: url($asteroid1) no-repeat center; 
+}
+
+
+
