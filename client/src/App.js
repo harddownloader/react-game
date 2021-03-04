@@ -12,6 +12,8 @@ import Score from './components/Score';
 import Spaceship from './components/Spaceship';
 // выстрелы карабля
 import Bullet from './components/Bullet';
+// враги
+import Enemy from './components/Enemy'
 
 // utils
 import makeId from './utils/generateRandomString';
@@ -35,11 +37,40 @@ function App() {
   // для изменения уровеня жизни(полоска)
   const changeLifeValue = (count) => setScore(prev => count);
 
+  /* ---- враги ----- */
+  // враги
+  const [enemyes, setEnemys] = useState([]);
+
+  const didMountNewEnemy = (x, y) => {
+    const randomId = makeId(10);
+    // console.log('randomId', randomId)
+    // console.log('posBulletX', x)
+    setEnemys([
+      ...enemyes,
+      {
+        id: randomId,
+        x: x,
+        y: y
+      }
+    ]);
+  };
+
+  // удалем выстрел если он скрылся за экран
+  const unmountChildEnemy = (idComponent) => {
+    const enemyesTmp = enemyes;
+    enemyesTmp.splice(idComponent, 1);
+    // console.log('bulletsTmp', bulletsTmp);
+    setEnemys(enemyesTmp);
+  }
+
+  /* ---- /враги ----- */
+
 
   // координаты карабля
   const [posX, setPosX] = useState(0);
   const [posY, setPosY] = useState(0);
 
+  /* --- выстрелы нашего карабля --- */
   // координаты выстрела
   const [posBulletX, setPosBulletX] = useState(0);
   const [posBulletY, setPosBulletY] = useState(0);
@@ -48,8 +79,8 @@ function App() {
   // добавляем новый выстрел в список выстрелов
   const didMountNewBullet = (x, y) => {
     const randomId = makeId(10);
-    console.log('randomId', randomId)
-    console.log('posBulletX', x)
+    // console.log('randomId', randomId)
+    // console.log('posBulletX', x)
     setBullets([
       ...bullets,
       {
@@ -67,21 +98,21 @@ function App() {
     // console.log('bulletsTmp', bulletsTmp);
     setBullets(bulletsTmp);
   }
+  /* --- /выстрелы нашего карабля --- */
 
+  /* --- ship control --- */
   useEffect(() => {
-    // console.log('componentDidMounted');
     window.addEventListener('mousemove', mouseMoveHandler);
     window.addEventListener('mousedown', mouseDownHandler);
-    // shipRect = document.getElementById('ship').getBoundingClientRect();
-    // shipRect = document.getElementById('life').getBoundingClientRect();
-    // console.log('shipRect', shipRect);
 
     return () => {
       window.removeEventListener('mousemove', mouseMoveHandler);
       window.removeEventListener('mousedown', mouseDownHandler);
     }
   });
+  /* --- /ship control --- */
 
+  /* --- ship --- */
   // когда произошло событие движения миши
   const mouseMoveHandler = (event) => {
     setPosX(event.clientX);
@@ -91,11 +122,10 @@ function App() {
   // когда произошел клик
   const mouseDownHandler = (event) => {
     console.log('mouseDownHandler');
-    // setPosBulletX(event.clientX);
-    // setPosBulletY(event.clientY);
     // создаем выстрел
     didMountNewBullet(event.clientX, event.clientY);
   };
+  /* --- /ship--- */
 
   return (
     <AppContext.Provider value={{
@@ -113,10 +143,17 @@ function App() {
       <Lifes />
       <Score />
       <Spaceship/>
+
+      {/* выстрелы нашего карабля */}
       {bullets.map(item => (
         <Bullet key={item.id} idComponent={item.id} x={item.x} y={item.y} unmountMe={unmountChildBullet} />
       ))}
       <LifeBar />
+      
+      {/* враги */}
+      {enemyes.map(item => (
+        <Enemy key={item.id} idComponent={item.id} x={item.x} y={item.y} unmountMe={unmountChildEnemy} />
+      ))}
     </AppContext.Provider>
   );
 }

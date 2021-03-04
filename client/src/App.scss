@@ -174,13 +174,14 @@ body {
 
 .bullet {
 	position: absolute;
-	width: 3px;
-	height: 10px;
+	width: 8px;
+	height: 8px;
 	
 	border-radius: 5px;
 	
 	margin-left: -5px;
-	background: red;
+	// background: red;
+	background: url($sprite) 113px 214px;
 	z-index: 1000;
 }
 
