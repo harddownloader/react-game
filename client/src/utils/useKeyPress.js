@@ -25,14 +25,14 @@ function App() {
 // Hook
 function useKeyPress(targetKey) {
   // State for keeping track of whether key is pressed
-  // const [keyPressed, setKeyPressed] = useState(false);
-  let keyPressed = useRef(false)
+  const [keyPressed, setKeyPressed] = useState(false);
+  // let keyPressed = useRef(false)
 
   // If pressed key is our target key then set to true
   function downHandler({ key }) {
     if (key === targetKey) {
-      // setKeyPressed(true);
-      keyPressed.current = true
+      setKeyPressed(true);
+      // keyPressed.current = true
       console.log('down')
     }
   }
@@ -40,8 +40,8 @@ function useKeyPress(targetKey) {
   // If released key is our target key then set to false
   const upHandler = ({ key }) => {
     if (key === targetKey) {
-      // setKeyPressed(false);
-      keyPressed.current = false
+      setKeyPressed(false);
+      // keyPressed.current = false
       console.log('up')
     }
   };
@@ -58,7 +58,8 @@ function useKeyPress(targetKey) {
     };
   }, []); // Empty array ensures that effect is only run on mount and unmount
 
-  return keyPressed.current;
+  // return keyPressed.current;
+  return keyPressed;
 }
 
 export default useKeyPress;

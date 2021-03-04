@@ -1,10 +1,6 @@
-const {useEffect, useState, useRef, useReducer} = React;
+import React, { useRef, useState, useEffect, useContext, useMemo, useReducer } from 'react';
 
-// https://codeburst.io/reactjs-build-a-drunken-snake-game-using-hooks-642cf31ef95e
-/* Thanks Dan Abramov  for useInterval hook
- https://overreacted.io/making-setinterval-declarative-with-react-hooks/
-*/
-export default function useInterval(callback, delay) {
+function useInterval(callback, delay) {
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -77,3 +73,107 @@ function Timer({pause}) {
     </div>
   );
 }
+
+
+function initState () {
+  const grid = initGrid();
+  return {
+    grid,
+    snake: {
+      head: {
+        row: 5,
+        col: 9,
+      },
+      tail:[],
+    },
+    food: {
+      row: Math.floor(Math.random() * 5),
+      col: Math.floor(Math.random() * 5),
+    },
+    score: 0,
+    showGrid: true,
+    lost: false,
+    message: 'Press <space> or touch/click to start the game',
+    inprogress: false,
+  }
+}
+
+function initGrid () {
+  const grid = [];
+  for (let row = 0; row <20; row++) {
+    const cols = [];
+    for (let col = 0; col < 20; col ++) {  
+      cols.push({
+        row,
+        col
+      });
+    }
+    grid.push(cols);  
+  }
+  return grid;
+}
+
+const random = () => {
+  return Math.random(); 
+};
+
+// Lets create KEYS constant for tracking movement
+const Keys = {
+  Space: 32,
+  Left: 37,
+  Up: 38,
+  Right: 39,
+  Down: 40,
+  a: 65,  // left
+  w: 87,  // up
+  s: 83,  // down
+  d: 68   // right
+}
+
+// Default move the snake to the right
+var move = Keys.Right;
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'game_lost':
+      return {
+        ...state,
+        showGrid: state.showGrid,
+        lost: true,
+        message: 'Press <space> or touch/click to start the game',
+        inprogress: false,  // Used in Timer
+      }
+    case 'update':
+      console.log(action.newstate); 
+      return {
+        ...state,
+        ...action.newstate
+      }
+      
+    case 'toggle_grid':
+      return {
+        ...state,
+        showGrid: !state.showGrid
+      };
+      
+    case 'restart':
+      let newState = {
+        ...state,
+        message: 'Game in progress ☝',
+        inprogress: true,
+        lost: false,
+        snake: {
+          ...state.snake,
+          head: {
+            row: Math.floor(random() * 5),
+            col: Math.floor(random() * 5),
+          },
+          tail: [],
+        }
+      }
+      return newState;
+    default: {
+     return state;
+    }
+  }
+};
