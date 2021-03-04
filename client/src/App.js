@@ -17,6 +17,9 @@ import Enemy from './components/Enemy'
 
 // utils
 import makeId from './utils/generateRandomString';
+import getRandomInt from './utils/generateRandomNumber'
+import useInterval from './utils/useInterval';
+import getRandomArbitrary from './utils/generateRandomNumberArbitrary'
 
 
 export const AppContext = React.createContext();
@@ -43,12 +46,16 @@ function App() {
 
   const didMountNewEnemy = (x, y) => {
     const randomId = makeId(10);
+    const randomType = getRandomArbitrary(1, 4)
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
+
+    // создаем нового врага
     setEnemys([
       ...enemyes,
       {
         id: randomId,
+        type: randomType,
         x: x,
         y: y
       }
@@ -58,14 +65,33 @@ function App() {
   // удалем выстрел если он скрылся за экран
   const unmountChildEnemy = (idComponent) => {
     const enemyesTmp = enemyes;
+    // удаляем нужного врага
     enemyesTmp.splice(idComponent, 1);
     // console.log('bulletsTmp', bulletsTmp);
+
+    // сохраняем новое состояние с врагами
     setEnemys(enemyesTmp);
   }
+
+  // цикл на добавление врагов, если их недостаточно
+  useInterval(() => {
+    // setFlag(flag + 1);
+    // console.log('flag', flag);
+
+    // если выстрел ушел за горизонт - удаляем его
+    if(enemyes.length < 5) {
+      const y = 0;
+      const maxWidth = window.innerWidth
+      const x = getRandomInt(maxWidth)
+      didMountNewEnemy(x, y)
+    }
+
+  }, 3000);
 
   /* ---- /враги ----- */
 
 
+  /* ---- крабль ---- */
   // координаты карабля
   const [posX, setPosX] = useState(0);
   const [posY, setPosY] = useState(0);
@@ -81,6 +107,8 @@ function App() {
     const randomId = makeId(10);
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
+
+    // создаем новый выстрел
     setBullets([
       ...bullets,
       {
@@ -94,8 +122,10 @@ function App() {
   // удалем выстрел если он скрылся за экран
   const unmountChildBullet = (idComponent) => {
     const bulletsTmp = bullets;
+    // удаляем нужный выстрел из копии стейта игры
     bulletsTmp.splice(idComponent, 1);
     // console.log('bulletsTmp', bulletsTmp);
+    // сохраняем новый стейт без ненужного выстрела
     setBullets(bulletsTmp);
   }
   /* --- /выстрелы нашего карабля --- */
@@ -152,7 +182,7 @@ function App() {
       
       {/* враги */}
       {enemyes.map(item => (
-        <Enemy key={item.id} idComponent={item.id} x={item.x} y={item.y} unmountMe={unmountChildEnemy} />
+        <Enemy key={item.id} idComponent={item.id} x={item.x} y={item.y} type={item.type} unmountMe={unmountChildEnemy} />
       ))}
     </AppContext.Provider>
   );

@@ -1,3 +1,4 @@
+// length - в сколько символов должна быть строка
 function makeId(length) {
   var result           = '';
   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

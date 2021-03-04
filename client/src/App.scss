@@ -2,7 +2,7 @@
 
 $sprite: 'assets/images/sprite.png';
 $space_bg: 'assets/images/space-bg.jpg';
-$enemy: 'assets/images/enemy.png';
+// $enemy: 'assets/images/enemy.png';
 
 $planet1: 'assets/images/planet1.png';
 $planet2: 'assets/images/planet2.png';
@@ -194,15 +194,35 @@ body {
 	z-index: 900;
 }
 
+// враг
 .enemy {
 	position: absolute;
-	width: 50px;
-	height: 50px;
+	width: 58px;
+	height: 61px;
 	top: -50px;
 	left: 50%;
-	background: url($enemy) no-repeat center;
+	// background: url($sprite) -64px 512px;
 	z-index: 950;
 }
+
+// тип врагов
+.enemy-type-1 {
+	background: url($sprite) -64px 512px;
+}
+
+.enemy-type-2 {
+	background: url($sprite) -64px 413px;
+}
+
+.enemy-type-3 {
+	background: url($sprite) -64px 319px;
+}
+
+.enemy-type-4 {
+	background: url($sprite) -64px 225px;
+}
+
+
 
 .small-star {
 	position: absolute;
