@@ -4,8 +4,27 @@ import React, { useRef, useState, useEffect, useContext, useMemo, useReducer } f
 import useInterval from '../utils/useInterval';
 import getRandomArbitrary from '../utils/generateRandomNumberArbitrary'
 
+// context
+// import {AppContext} from '../App'
+
+
+
+// const doElsCollide = (el1, el2) => {
+//   el1.offsetBottom = el1.offsetTop + el1.offsetHeight;
+//   el1.offsetRight = el1.offsetLeft + el1.offsetWidth;
+//   el2.offsetBottom = el2.offsetTop + el2.offsetHeight;
+//   el2.offsetRight = el2.offsetLeft + el2.offsetWidth;
+  
+//   return !((el1.offsetBottom < el2.offsetTop) ||
+//            (el1.offsetTop > el2.offsetBottom) ||
+//            (el1.offsetRight < el2.offsetLeft) ||
+//            (el1.offsetLeft > el2.offsetRight))
+// };
 
 const Enemy = (props) => {
+
+  // const {enemyes, bullets} = useContext(AppContext)
+
   const EnemyY = props.y;
   const EnemyX = props.x;
   const EmenyType = props.type;
@@ -29,6 +48,29 @@ const Enemy = (props) => {
     // console.log('new X Enemy');
     setPosEnemyX(EnemyX)
   }, [EnemyX])
+
+  
+  // useEffect(() => {
+  //   const thisElement = document.getElementById(idComponent + 'EnemyNo');
+  //   const bulletsTmp = bullets
+  //   // console.log(bulletsTmp)
+  //   for (let i=0; i< bulletsTmp.length ; i++) {
+  //     let bulletEl = document.getElementById(bulletsTmp[i].id + 'BulletNo')
+  //     // console.log(bulletEl)
+  //     if(thisElement && bulletEl) {
+  //       let isHit = doElsCollide(thisElement, bulletEl)
+  //       if (isHit) {
+  //         // alert('hit')
+  //         props.unmountMe(idComponent)
+  //       }
+  //     }
+      
+  //   }
+  //   // console.log('thisElement', thisElement.offsetTop)
+  //   return () => {
+      
+  //   };
+  // });
 
   // цикл анимации движения врага
   useInterval(() => {
@@ -56,7 +98,11 @@ const Enemy = (props) => {
 
   return(
     <>
-      <div className={`enemy enemy-type-${EmenyType}`} id={idComponent + 'EnemyNo'} style={{top: posEnemyY + 'px', left: posEnemyX + 'px'}}></div>
+      <div
+        className={`enemy enemy-type-${EmenyType}`}
+        id={idComponent + 'EnemyNo'}
+        style={{top: posEnemyY + 'px', left: posEnemyX + 'px'}}
+      ></div>
     </>
   );
 }

@@ -24,6 +24,18 @@ import getRandomArbitrary from './utils/generateRandomNumberArbitrary'
 
 export const AppContext = React.createContext();
 
+const doElsCollide = (el1, el2) => {
+  el1.offsetBottom = el1.offsetTop + el1.offsetHeight;
+  el1.offsetRight = el1.offsetLeft + el1.offsetWidth;
+  el2.offsetBottom = el2.offsetTop + el2.offsetHeight;
+  el2.offsetRight = el2.offsetLeft + el2.offsetWidth;
+  
+  return !((el1.offsetBottom < el2.offsetTop) ||
+           (el1.offsetTop > el2.offsetBottom) ||
+           (el1.offsetRight < el2.offsetLeft) ||
+           (el1.offsetLeft > el2.offsetRight))
+};
+
 function App() {
   // кол-во жизней
   const [lifes, setLifes] = useState(3);
@@ -40,8 +52,14 @@ function App() {
   // для изменения уровеня жизни(полоска)
   const changeLifeValue = (count) => setScore(prev => count);
 
+  // координаты выстрела нашего ship
+  const [posBulletX, setPosBulletX] = useState(0);
+  const [posBulletY, setPosBulletY] = useState(0);
+  const [bullets, setBullets] = useState([]);
+
   /* ---- враги ----- */
   // враги
+
   const [enemyes, setEnemys] = useState([]);
 
   const didMountNewEnemy = (x, y) => {
@@ -67,7 +85,6 @@ function App() {
     const enemyesTmp = enemyes;
     // удаляем нужного врага
     enemyesTmp.splice(idComponent, 1);
-    // console.log('bulletsTmp', bulletsTmp);
 
     // сохраняем новое состояние с врагами
     setEnemys(enemyesTmp);
@@ -88,8 +105,37 @@ function App() {
 
   }, 3000);
 
-  /* ---- /враги ----- */
+  useEffect(() => {
+    for(let q=0; q<enemyes.length; q++) {
+      const thisElement = document.getElementById(enemyes[q].id + 'EnemyNo');
+      const bulletsTmp = bullets
+      // console.log(bulletsTmp)
+      for (let i=0; i< bulletsTmp.length ; i++) {
+        let bulletEl = document.getElementById(bulletsTmp[i].id + 'BulletNo')
+        // console.log(bulletEl)
+        if(thisElement && bulletEl) {
+          let isHit = doElsCollide(thisElement, bulletEl)
+          if (isHit) {
+            // alert('hit')
+            // удаляем наш выстрел
+            unmountChildBullet(bulletsTmp[i].id)
+            // удаляем врага
+            unmountChildEnemy(enemyes[q].id)
+            // добавляем нам очков
+            changeScore(score + 100)
+          }
+        }
+        
+      }
+    }
+    
+    // console.log('thisElement', thisElement.offsetTop)
+    return () => {
+      
+    };
+  });
 
+  /* ---- /враги ----- */
 
   /* ---- крабль ---- */
   // координаты карабля
@@ -97,10 +143,7 @@ function App() {
   const [posY, setPosY] = useState(0);
 
   /* --- выстрелы нашего карабля --- */
-  // координаты выстрела
-  const [posBulletX, setPosBulletX] = useState(0);
-  const [posBulletY, setPosBulletY] = useState(0);
-  const [bullets, setBullets] = useState([]);
+  
 
   // добавляем новый выстрел в список выстрелов
   const didMountNewBullet = (x, y) => {
@@ -165,7 +208,9 @@ function App() {
       shipX: posX,
       shipY: posY,
       BulletY: posBulletY,
-      BulletX: posBulletX
+      BulletX: posBulletX,
+      enemyes: enemyes,
+      bullets: bullets
     }}>
       <div className="sky"></div>
       <pre>x - {posX}</pre>
@@ -176,13 +221,26 @@ function App() {
 
       {/* выстрелы нашего карабля */}
       {bullets.map(item => (
-        <Bullet key={item.id} idComponent={item.id} x={item.x} y={item.y} unmountMe={unmountChildBullet} />
+        <Bullet
+          key={item.id}
+          idComponent={item.id}
+          x={item.x}
+          y={item.y}
+          unmountMe={unmountChildBullet}
+        />
       ))}
       <LifeBar />
       
       {/* враги */}
-      {enemyes.map(item => (
-        <Enemy key={item.id} idComponent={item.id} x={item.x} y={item.y} type={item.type} unmountMe={unmountChildEnemy} />
+      {enemyes.map((item, index) => (
+        <Enemy
+          key={item.id}
+          idComponent={item.id}
+          x={item.x}
+          y={item.y}
+          type={item.type}
+          unmountMe={unmountChildEnemy}
+        />
       ))}
     </AppContext.Provider>
   );
