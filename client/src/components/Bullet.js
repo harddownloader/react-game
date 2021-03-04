@@ -1,23 +1,8 @@
 import React, { useRef, useState, useEffect, useContext, useMemo, useCallback } from 'react';
 
 // import {AppContext} from '../App';
+import useInterval from '../utils/useInterval';
 
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    let id = setInterval(() => {
-      savedCallback.current();
-    }, delay);
-    return () => clearInterval(id);
-  }, [delay]);
-}
 
 function Bullet(props) {
   // const {BulletY, BulletX} = useContext(AppContext);
@@ -47,7 +32,7 @@ function Bullet(props) {
   const changeFlag = useCallback((newValue) => setFlag(newValue), []);
 
   useEffect(() => {
-    console.log('new Y bullet');
+    // console.log('new Y bullet');
     setPosBulletY(BulletY);
   //   // const timeout = setTimeout(() => {
   //   //   console.log('flag', flag)
@@ -60,7 +45,7 @@ function Bullet(props) {
   },[BulletY]);
 
   useEffect(() => {
-    console.log('new X bullet');
+    // console.log('new X bullet');
     setPosBulletX(BulletX)
   }, [BulletX])
 
@@ -74,7 +59,7 @@ function Bullet(props) {
     }
 
     setPosBulletY(posBulletY - 5);
-    console.log('posBulletY', posBulletY);
+    // console.log('posBulletY', posBulletY);
   }, 50);
 
   
