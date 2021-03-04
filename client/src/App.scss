@@ -1,6 +1,6 @@
 // $spaceBg: 'assets/images/space_bg1.jpeg';
 
-$sprite: 'assets/images/sprite.jpg';
+$sprite: 'assets/images/sprite.png';
 $space_bg: 'assets/images/space-bg.jpg';
 $enemy: 'assets/images/enemy.png';
 
@@ -10,7 +10,9 @@ $planet2: 'assets/images/planet2.png';
 $planet3: 'assets/images/planet3.png';
 
 $asteroid1: 'assets/images/asteroid1.png';
-$space_ship: 'assets/images/spaceship3.png';
+// $space_ship: 'assets/images/spaceship3.png';
+
+$font_url: 'assets/fonts/Minecraft/Minecraft.ttf';
 
 // html,2121
 // body {
@@ -38,6 +40,11 @@ $space_ship: 'assets/images/spaceship3.png';
 //   height: 100%;
 //   background-image: url($spaceBg);
 // }
+
+@font-face {
+  font-family: "Minecraft";
+  src: url($font_url) format("truetype");
+}
 
 * {
 	margin:0;
@@ -81,7 +88,8 @@ body {
 	top: 20px;
 	left: 20px;
 	color: #fff;
-	font-size: 20px;
+	font-family: "Minecraft";
+	font-size: 40px;
 }
 
 // жизни
@@ -106,7 +114,7 @@ body {
 	right: 20px;
 	width: 20px;
 	height: 220px;
-	background: #2f2828;
+	background: #222227;
 }
 
 .life-bar {
@@ -124,20 +132,20 @@ body {
 	width: 100%;
 	right: 0;
 	bottom:0;
-	background: #38862a;
+	background: #27ff00;
 }
 // /здоровье
 
 // карабль
 #ship {
 	position: absolute;
-	width: 100px;
-	height: 100px;
+	width: 120px;
+	height: 128px;
 	top: 70%;
 	left: 50%;
 	margin-left: -50px;
-	background: url($space_ship) no-repeat 50% 50%;
-	background-size: contain;
+	background: url($sprite) 180px 157px;
+	// background-size: contain;
 	z-index: 1000;
 }
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext, useMemo, useCallback } from 'react';
 
-import {AppContext} from '../App';
+// import {AppContext} from '../App';
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -23,6 +23,7 @@ function Bullet(props) {
   // const {BulletY, BulletX} = useContext(AppContext);
   const BulletY = props.y;
   const BulletX = props.x;
+  const idComponent = props.idComponent;
 
   // const timoutId = setTimeout(()=> {
   //   setPosBullet({
@@ -39,7 +40,7 @@ function Bullet(props) {
   // координаты выстрела
   const [posBulletX, setPosBulletX] = useState(BulletX);
   const [posBulletY, setPosBulletY] = useState(BulletY);
-  const [flag, setFlag] = useState(0);
+  // const [flag, setFlag] = useState(0);
 
   const onBulletChangedX = useCallback((newValue) => setPosBulletX(newValue), []);
   const onBulletChangedY = useCallback((newValue) => setPosBulletY(newValue), []);
@@ -67,7 +68,11 @@ function Bullet(props) {
     // setFlag(flag + 1);
     // console.log('flag', flag);
 
-    
+    // если выстрел ушел за горизонт - удаляем его
+    if(posBulletY < 0) {
+      props.unmountMe(idComponent)
+    }
+
     setPosBulletY(posBulletY - 5);
     console.log('posBulletY', posBulletY);
   }, 50);
@@ -77,7 +82,7 @@ function Bullet(props) {
 
   return (
     <>
-      <div className="bullet" style={{top: posBulletY + 'px', left: posBulletX + 'px'}}></div>
+      <div className="bullet" id={idComponent + 'BulletNo'} style={{top: posBulletY + 'px', left: posBulletX + 'px'}}></div>
     </>
   );
 }

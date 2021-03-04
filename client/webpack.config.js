@@ -39,7 +39,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(png|svg|jpg|jpeg|gif|eot|ttf|woff|woff2)$/i,
         use: ['file-loader'],
         include: path.join(__dirname, 'src/assets/')
       },

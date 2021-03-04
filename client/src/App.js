@@ -43,7 +43,7 @@ function App() {
   const [bullets, setBullets] = useState([])
 
   // добавляем новый выстрел в список выстрелов
-  const addBulletToList = () => {
+  const didMountNewBullet = () => {
     setBullets([
       ...bullets,
       {
@@ -53,6 +53,14 @@ function App() {
       }
     ]);
   };
+
+  // удалем выстрел если он скрылся за экран
+  const unmountChildBullet = (idComponent) => {
+    const bulletsTmp = bullets
+    bulletsTmp.splice(idComponent, 1)
+    console.log('bulletsTmp', bulletsTmp)
+    setBullets(bulletsTmp)
+  }
 
   useEffect(() => {
     // console.log('componentDidMounted');
@@ -68,28 +76,20 @@ function App() {
     }
   });
 
+  // когда произошло событие движения миши
   const mouseMoveHandler = (event) => {
     setPosX(event.clientX)
     setPosY(event.clientY)
   }
 
+  // когда произошел клик
   const mouseDownHandler = (event) => {
     console.log('mouseDownHandler')
     setPosBulletX(event.clientX)
     setPosBulletY(event.clientY)
-    addBulletToList()
+    // создаем выстрел
+    didMountNewBullet()
   }
-  
-
-  // const authContext = useMemo(
-  //   () => ({
-  //     getShipRect: () => {
-  //       console.log('shipRect in memo', shipRect)
-  //       return shipRect;
-  //     },
-  //   }),
-  //   [shipRect]
-  // );
 
   return (
     <AppContext.Provider value={{
@@ -108,7 +108,7 @@ function App() {
       <Score />
       <Spaceship/>
       {bullets.map(item => (
-        <Bullet key={item.id} x={item.x} y={item.y}/>
+        <Bullet key={item.id} idComponent={item.id} x={item.x} y={item.y} unmountMe={unmountChildBullet} />
       ))}
       <LifeBar />
     </AppContext.Provider>
