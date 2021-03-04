@@ -14,6 +14,8 @@ $asteroid1: 'assets/images/asteroid1.png';
 
 $font_url: 'assets/fonts/Minecraft/Minecraft.ttf';
 
+$fullscreen: 'assets/images/fullscreen-svg.svg';
+
 // html,2121
 // body {
 //   // for canvas
@@ -284,5 +286,38 @@ body {
 	background: url($asteroid1) no-repeat center; 
 }
 
+// menu
+#menu {
+	position: absolute;
+	color: #fff;
+	font-family: "Minecraft";
+	width: 100%;
+	height: 100%;
+	display: block;
+	text-align: center;
+}
 
+.menu__heading{
+	margin-top: 160px;
+	margin-bottom: 60px;
+}
+.menu__title{
+	text-align: center;
+}
 
+.menu__wrap {
+	width: 100%;
+}
+.menu__btn{
+	padding: 50px;
+}
+
+.fullscreen {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	background: url($fullscreen);
+	background-size: contain;
+}

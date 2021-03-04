@@ -2,6 +2,12 @@ import React, { useRef, useState, useEffect, useContext, useMemo, useReducer } f
 // import jQuery from 'jquery';
 import './App.scss';
 
+// фон
+import Space from './components/Space';
+// fullscreen блок
+import Fullscreen from './components/Fullscreen';
+// сцена конца игры
+import Menu from './screens/Menu';
 // жизни
 import Lifes from './components/Lifes';
 // полоска жизни
@@ -20,25 +26,19 @@ import makeId from './utils/generateRandomString';
 import getRandomInt from './utils/generateRandomNumber'
 import useInterval from './utils/useInterval';
 import getRandomArbitrary from './utils/generateRandomNumberArbitrary'
-
+import doElsCollide from './utils/isElementOnAnoterElement'
 
 export const AppContext = React.createContext();
 
-const doElsCollide = (el1, el2) => {
-  el1.offsetBottom = el1.offsetTop + el1.offsetHeight;
-  el1.offsetRight = el1.offsetLeft + el1.offsetWidth;
-  el2.offsetBottom = el2.offsetTop + el2.offsetHeight;
-  el2.offsetRight = el2.offsetLeft + el2.offsetWidth;
-  
-  return !((el1.offsetBottom < el2.offsetTop) ||
-           (el1.offsetTop > el2.offsetBottom) ||
-           (el1.offsetRight < el2.offsetLeft) ||
-           (el1.offsetLeft > el2.offsetRight))
-};
+
 
 function App() {
+  // статус игры
+  const [isGameOver, setIsGameOver] = useState(null);
+  // для изменения статуса игры
+  const changeIsGameOver = (status) => setIsGameOver(prev => status);
   // кол-во жизней
-  const [lifes, setLifes] = useState(3);
+  const [lifes, setLifes] = useState(0);
   // для изменения кол-ва жизней
   const changeLifes = (count) => setLifes(prev => count);
 
@@ -48,9 +48,9 @@ function App() {
   const changeScore = (newScore) => setScore(prev => newScore);
 
   // уровень жизни(полоска) - 200px
-  const [lifeValue, setLifeValue] = useState(200);
+  const [lifeValue, setLifeValue] = useState(0);
   // для изменения уровеня жизни(полоска)
-  const changeLifeValue = (count) => setScore(prev => count);
+  const changeLifeValue = (count) => setLifeValue(prev => count);
 
   // координаты выстрела нашего ship
   const [posBulletX, setPosBulletX] = useState(0);
@@ -105,16 +105,20 @@ function App() {
 
   }, 3000);
 
+  // цикл проверок на сопрекосновение игровых субъектов
   useEffect(() => {
+    
+    // есть ли соприкосновение врагов и выстрелов карабля
     for(let q=0; q<enemyes.length; q++) {
-      const thisElement = document.getElementById(enemyes[q].id + 'EnemyNo');
-      const bulletsTmp = bullets
-      // console.log(bulletsTmp)
+      const currentEnemy= document.getElementById(enemyes[q].id + 'EnemyNo');
+      const bulletsTmp = bullets;
+
+      // проверяем находятся ли выстрелы на месте врагов - если да, то убираем 2х и влюсуем очки
       for (let i=0; i< bulletsTmp.length ; i++) {
         let bulletEl = document.getElementById(bulletsTmp[i].id + 'BulletNo')
         // console.log(bulletEl)
-        if(thisElement && bulletEl) {
-          let isHit = doElsCollide(thisElement, bulletEl)
+        if(currentEnemy && bulletEl) {
+          let isHit = doElsCollide(currentEnemy, bulletEl)
           if (isHit) {
             // alert('hit')
             // удаляем наш выстрел
@@ -125,7 +129,18 @@ function App() {
             changeScore(score + 100)
           }
         }
-        
+      }
+
+      // если ли сопрекосновение карабля с врагами
+      const ship = document.getElementById('ship')
+      
+      if(currentEnemy && ship) {
+        let isShipOnEnemy = doElsCollide(currentEnemy, ship)
+        if (isShipOnEnemy) {
+          // убиваем пришельца 
+          unmountChildEnemy(enemyes[q].id)
+          changeLifeValue(lifeValue - 50)
+        }
       }
     }
     
@@ -134,6 +149,24 @@ function App() {
       
     };
   });
+
+  // когда меняется уровень здоровья
+  useEffect(() => {
+    // когда уровень здоровья равен 0 - то расходуем жизнь
+    if (lifeValue === 0 && lifes > 0) {
+      changeLifes(lifes-1)
+      changeLifeValue(200)
+    }
+
+  }, [lifeValue]);
+
+  // когда меняется кол-во жизней
+  useEffect(() => {
+    // когда нет жизней - то ставим GameOver
+    if (lifes === 0 && isGameOver !== null) {
+      changeIsGameOver(true)
+    }
+  }, [lifes]);
 
   /* ---- /враги ----- */
 
@@ -173,14 +206,18 @@ function App() {
   }
   /* --- /выстрелы нашего карабля --- */
 
+
+
   /* --- ship control --- */
   useEffect(() => {
     window.addEventListener('mousemove', mouseMoveHandler);
     window.addEventListener('mousedown', mouseDownHandler);
+    // window.addEventListener('keypress', fullScreenHandler);
 
     return () => {
       window.removeEventListener('mousemove', mouseMoveHandler);
       window.removeEventListener('mousedown', mouseDownHandler);
+      // window.addEventListener('keypress', fullScreenHandler)
     }
   });
   /* --- /ship control --- */
@@ -200,50 +237,86 @@ function App() {
   };
   /* --- /ship--- */
 
-  return (
-    <AppContext.Provider value={{
-      lifesCount: lifes,
-      scoreCount: score,
-      lifeValue: lifeValue,
-      shipX: posX,
-      shipY: posY,
-      BulletY: posBulletY,
-      BulletX: posBulletX,
-      enemyes: enemyes,
-      bullets: bullets
-    }}>
-      <div className="sky"></div>
-      <pre>x - {posX}</pre>
-      <pre>y - {posY}</pre>
-      <Lifes />
-      <Score />
-      <Spaceship/>
+  /* --- game --- */
+  const startNewGame = () => {
+    console.log('isGameOver in startNewGame', isGameOver)
+    changeLifes(3)
+    changeScore(0)
+    changeLifeValue(200)
+    setEnemys([])
+    setBullets([])
+    setPosX(0)
+    setPosY(0)
+    changeIsGameOver(false)
+  }
+  /* --- /game --- */
 
-      {/* выстрелы нашего карабля */}
-      {bullets.map(item => (
-        <Bullet
-          key={item.id}
-          idComponent={item.id}
-          x={item.x}
-          y={item.y}
-          unmountMe={unmountChildBullet}
-        />
-      ))}
-      <LifeBar />
-      
-      {/* враги */}
-      {enemyes.map((item, index) => (
-        <Enemy
-          key={item.id}
-          idComponent={item.id}
-          x={item.x}
-          y={item.y}
-          type={item.type}
-          unmountMe={unmountChildEnemy}
-        />
-      ))}
-    </AppContext.Provider>
-  );
+  // console.log('lifes', lifes)
+  // console.log('isGameOver', isGameOver)
+  if(lifes === 0 && isGameOver) {
+    return (
+      <>
+        <Space />
+        <Menu title="GAME OVER" startNewGame={startNewGame} />
+        <Fullscreen />
+      </>
+    )
+  } else if(lifes === 0 && !isGameOver) {
+    return (
+      <>
+        <Space />
+        <Menu title="SPACE BATTLE" startNewGame={startNewGame} />
+        <Fullscreen />
+      </>
+    )
+  } else {
+    return (
+      <AppContext.Provider value={{
+        lifesCount: lifes,
+        scoreCount: score,
+        lifeValue: lifeValue,
+        shipX: posX,
+        shipY: posY,
+        BulletY: posBulletY,
+        BulletX: posBulletX,
+        enemyes: enemyes,
+        bullets: bullets
+      }}>
+        <Space />
+        <pre>x - {posX}</pre>
+        <pre>y - {posY}</pre>
+        <Lifes />
+        <Score />
+        <Spaceship/>
+  
+        {/* выстрелы нашего карабля */}
+        {bullets.map(item => (
+          <Bullet
+            key={item.id}
+            idComponent={item.id}
+            x={item.x}
+            y={item.y}
+            unmountMe={unmountChildBullet}
+          />
+        ))}
+        <LifeBar />
+        
+        {/* враги */}
+        {enemyes.map((item, index) => (
+          <Enemy
+            key={item.id}
+            idComponent={item.id}
+            x={item.x}
+            y={item.y}
+            type={item.type}
+            unmountMe={unmountChildEnemy}
+          />
+        ))}
+      </AppContext.Provider>
+    );
+  }
+
+  
 }
 
 
