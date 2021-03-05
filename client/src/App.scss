@@ -323,7 +323,7 @@ body {
 }
 
 .menu__heading{
-	margin-top: 160px;
+	margin-top: 120px;
 	margin-bottom: 60px;
 }
 .menu__title{
@@ -335,8 +335,10 @@ body {
 }
 .menu__btn{
 	padding: 50px;
+	margin-bottom: 20px;
 }
 
+// fullscreen
 .fullscreen {
 	position: absolute;
 	bottom: 0;
@@ -347,6 +349,7 @@ body {
 	background-size: contain;
 }
 
+// sounds
 .sounds{
 	position: absolute;
 	bottom: 0px;
@@ -365,6 +368,7 @@ body {
 	background-size: contain;
 }
 
+// footer
 .footer {
 	display: flex;
 	align-items: center;
@@ -390,4 +394,12 @@ body {
 .footer .footer__logo{
 	height: 100%;
 	border-left: 1px solid #000
+}
+
+// choose lvl
+.difficulty-lvl__heading{
+	margin-top: 10px;
+}
+.difficulty-lvl__item{
+	margin-top: 10px;
 }

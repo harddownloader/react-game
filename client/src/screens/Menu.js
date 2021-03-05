@@ -1,6 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 function Menu(props) {
+
+  const [selected, setSelected] = useState("easy")
+
+  const onValueChange = (event) => {
+    setSelected(event.target.value)
+  }
+
+  // const formSubmit(event) {
+  //   event.preventDefault();
+  //   console.log(this.state.selectedOption)
+  // }
+
+
   return (
     <>
       <div id="menu">
@@ -10,6 +23,47 @@ function Menu(props) {
         
         <div className="menu__wrap">
           <button className="menu__btn" onClick={e => props.startNewGame()}>New Game</button>
+
+          {/* lvl */}
+          <form>
+            <p className="difficulty-lvl__heading">Select the difficulty level:</p>
+
+            <div className="difficulty-lvl__item">
+              <input
+                type="radio"
+                id="easy"
+                name="easy"
+                value="easy"
+                checked={selected === "easy"}
+                onChange={onValueChange}
+                />
+              <label for="easy">Easy</label>
+            </div>
+
+            <div className="difficulty-lvl__item">
+              <input
+                type="radio"
+                id="medium"
+                name="medium"
+                value="medium"
+                checked={selected === "medium"}
+                onChange={onValueChange}
+              />
+              <label for="medium">Medium</label>
+            </div>
+
+            <div className="difficulty-lvl__item">
+              <input
+                type="radio"
+                id="hard"
+                name="hard"
+                value="hard"
+                checked={selected === "hard"}
+                onChange={onValueChange}
+              />
+              <label for="hard">Hard</label>
+            </div>
+          </form>
         </div>
       </div>
     </>
