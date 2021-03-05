@@ -23,7 +23,9 @@ import Spaceship from './components/Spaceship';
 // выстрелы карабля
 import Bullet from './components/Bullet';
 // враги
-import Enemy from './components/Enemy'
+import Enemy from './components/Enemy';
+// врыв
+import Explosion from './components/Explosion'
 
 // utils
 import makeId from './utils/generateRandomString';
@@ -105,6 +107,35 @@ function App() {
   }, [isSounds]);
   /* --- /sounds --- */
 
+  /* --- взрывы --- */
+
+  const [explosions, setExplosions] = useState([]);
+  const changeExplosions = (newState) => setExplosions(prev => newState);
+
+  const didMountNewExplosion = (x, y) => {
+    const randomId = makeId(10);
+
+    // создаем новый взрыв
+    changeExplosions([
+      ...explosions,
+      {
+        id: randomId,
+        x: x,
+        y: y
+      }
+    ]);
+  };
+
+  const unmountChildExplosion = (idComponent) => {
+    const explosionsTmp = explosions;
+    // удаляем нужный вырыв из копии стейта игры
+    explosionsTmp.splice(idComponent, 1);
+    // сохраняем новый стейт без ненужного взрыва
+    changeExplosions(explosionsTmp);
+  }
+
+  /* --- /взрывы --- */
+
 
   /* ---- враги ----- */
   // враги
@@ -170,6 +201,8 @@ function App() {
           let isHit = doElsCollide(currentEnemy, bulletEl)
           if (isHit) {
             // alert('hit')
+            // создаем взрыв
+            didMountNewExplosion(enemyes[q].x, enemyes[q].y)
             // удаляем наш выстрел
             unmountChildBullet(bulletsTmp[i].id)
             // удаляем врага
@@ -188,9 +221,12 @@ function App() {
       if(currentEnemy && ship) {
         let isShipOnEnemy = doElsCollide(currentEnemy, ship)
         if (isShipOnEnemy) {
+          // создаем взрыв(пришельца)
+          didMountNewExplosion(enemyes[q].x, enemyes[q].y)
           // убиваем пришельца 
           unmountChildEnemy(enemyes[q].id)
-          changeLifeValue(lifeValue - 200)
+          // отничаем здовье у нашего карабля
+          changeLifeValue(lifeValue - 10)
         }
       }
     }
@@ -358,7 +394,18 @@ function App() {
           />
         ))}
         <LifeBar />
-        
+
+        {/* взрывы */}
+        {explosions.map((item, index) => (
+          <Explosion
+            key={item.id}
+            idComponent={item.id}
+            x={item.x}
+            y={item.y}
+            unmountMe={unmountChildExplosion}
+          />
+        ))}
+
         {/* враги */}
         {enemyes.map((item, index) => (
           <Enemy

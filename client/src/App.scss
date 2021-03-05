@@ -18,6 +18,7 @@ $fullscreen: 'assets/images/fullscreen-svg.svg';
 $sounds_on: 'assets/images/sounds-on.svg';
 $sounds_off: 'assets/images/sounds-off.svg';
 
+
 // html,2121
 // body {
 //   // for canvas
@@ -226,7 +227,29 @@ body {
 	background: url($sprite) -64px 225px;
 }
 
+// анимация взрыва
+.explosion {
+	position: absolute;
+	width: 58px;
+	height: 61px;
+	z-index: 951;
+}
 
+.explosion-part-1 {
+	width: 54px;
+	height: 48px;
+	background: url($sprite) 363px 428px;
+}
+.explosion-part-2 {
+	width: 67px;
+	height: 71px;
+	background: url($sprite) 367px 361px;
+}
+.explosion-part-3 {
+	width: 103px;
+	height: 102px;
+	background: url($sprite) 388px 264px;
+}
 
 .small-star {
 	position: absolute;
