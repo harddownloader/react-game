@@ -364,3 +364,30 @@ body {
 	background: url($sounds_off);
 	background-size: contain;
 }
+
+.footer {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	background-color: #fff;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.footer .footer__link {
+	height: 100%;
+}
+
+.footer .footer__link.github-link {
+	height: auto;
+	color: #000;
+	font-family: 'Minecraft';
+	text-decoration: none;
+	padding: 15px;
+}
+
+.footer .footer__logo{
+	height: 100%;
+	border-left: 1px solid #000
+}

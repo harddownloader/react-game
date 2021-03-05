@@ -26,6 +26,8 @@ import Bullet from './components/Bullet';
 import Enemy from './components/Enemy';
 // врыв
 import Explosion from './components/Explosion'
+// footer
+import Footer from './components/Footer'
 
 // utils
 import makeId from './utils/generateRandomString';
@@ -352,6 +354,7 @@ function App() {
         <Menu title="GAME OVER" startNewGame={startNewGame} />
         <Fullscreen />
         <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds}/>
+        <Footer />
       </>
     )
   } else if(lifes === 0 && !isGameOver) {
@@ -361,6 +364,7 @@ function App() {
         <Menu title="SPACE BATTLE" startNewGame={startNewGame} />
         <Fullscreen />
         <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds}/>
+        <Footer />
       </>
     )
   } else {
