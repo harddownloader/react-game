@@ -44,6 +44,11 @@ module.exports = {
         include: path.join(__dirname, 'src/assets/')
       },
       {
+        test: /\.mp3$/,
+        include: path.join(__dirname, 'src/assets/'),
+        loader: 'file-loader'
+      },
+      {
         enforce: 'pre',
         test: /\.js$/,
         loader: 'source-map-loader',

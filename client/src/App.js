@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect, useContext, useMemo, useReducer } from 'react';
+// для музыки
+import useSound from 'use-sound';
 // import jQuery from 'jquery';
 import './App.scss';
 
@@ -6,6 +8,8 @@ import './App.scss';
 import Space from './components/Space';
 // fullscreen блок
 import Fullscreen from './components/Fullscreen';
+// sounds блок
+import Sounds from './components/Sounds'
 // сцена конца игры
 import Menu from './screens/Menu';
 // жизни
@@ -27,6 +31,13 @@ import getRandomInt from './utils/generateRandomNumber'
 import useInterval from './utils/useInterval';
 import getRandomArbitrary from './utils/generateRandomNumberArbitrary'
 import doElsCollide from './utils/isElementOnAnoterElement'
+
+// sounds
+import soundBgSound from './assets/audio/bg.mp3';
+import laserSound from './assets/audio/laser.mp3'; // shot
+import gameOverSound from './assets/audio/warp.mp3'; // game over
+import explosionSound from './assets/audio/explosion.mp3'; // взрыв вражеского карабля
+
 
 export const AppContext = React.createContext();
 
@@ -56,6 +67,44 @@ function App() {
   const [posBulletX, setPosBulletX] = useState(0);
   const [posBulletY, setPosBulletY] = useState(0);
   const [bullets, setBullets] = useState([]);
+
+  // музыка
+  const [isSounds, setIsSounds] = useState(false);
+  const toggleIsSounds = (status) => setIsSounds(prev => status);
+
+
+  /* --- sounds --- */
+  // bg
+  const [playBg, { stop }] = useSound(
+    soundBgSound,
+    { volume: 1 }
+  );
+  // laser
+  const [playLaser, { stopLaser }] = useSound(
+    laserSound,
+    { volume: 1 }
+  );
+  // game over
+  const [playGameOver, { stopGameOver }] = useSound(
+    gameOverSound,
+    { volume: 1 }
+  );
+  // взрыв вражеского карабля
+  const [playExplosion, { stopExplosion }] = useSound(
+    explosionSound,
+    { volume: 1 }
+  );
+
+  useEffect(() => {
+    console.log('isSounds', isSounds)
+    if (isSounds) {
+      playBg();
+    } else {
+      stop();
+    }
+  }, [isSounds]);
+  /* --- /sounds --- */
+
 
   /* ---- враги ----- */
   // враги
@@ -127,6 +176,8 @@ function App() {
             unmountChildEnemy(enemyes[q].id)
             // добавляем нам очков
             changeScore(score + 100)
+            // звук вырыва вражеского карабля
+            if(isSounds) playExplosion();
           }
         }
       }
@@ -139,7 +190,7 @@ function App() {
         if (isShipOnEnemy) {
           // убиваем пришельца 
           unmountChildEnemy(enemyes[q].id)
-          changeLifeValue(lifeValue - 50)
+          changeLifeValue(lifeValue - 200)
         }
       }
     }
@@ -165,6 +216,8 @@ function App() {
     // когда нет жизней - то ставим GameOver
     if (lifes === 0 && isGameOver !== null) {
       changeIsGameOver(true)
+      // ставим звук завершения игры
+      if(isSounds) playGameOver();
     }
   }, [lifes]);
 
@@ -193,6 +246,9 @@ function App() {
         y: y
       }
     ]);
+    // создаем звук выстрела
+    if(isSounds) playLaser();
+    
   };
 
   // удалем выстрел если он скрылся за экран
@@ -259,6 +315,7 @@ function App() {
         <Space />
         <Menu title="GAME OVER" startNewGame={startNewGame} />
         <Fullscreen />
+        <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds}/>
       </>
     )
   } else if(lifes === 0 && !isGameOver) {
@@ -267,6 +324,7 @@ function App() {
         <Space />
         <Menu title="SPACE BATTLE" startNewGame={startNewGame} />
         <Fullscreen />
+        <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds}/>
       </>
     )
   } else {
@@ -287,7 +345,7 @@ function App() {
         <pre>y - {posY}</pre>
         <Lifes />
         <Score />
-        <Spaceship/>
+        <Spaceship />
   
         {/* выстрелы нашего карабля */}
         {bullets.map(item => (

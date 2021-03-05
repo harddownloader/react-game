@@ -15,6 +15,8 @@ $asteroid1: 'assets/images/asteroid1.png';
 $font_url: 'assets/fonts/Minecraft/Minecraft.ttf';
 
 $fullscreen: 'assets/images/fullscreen-svg.svg';
+$sounds_on: 'assets/images/sounds-on.svg';
+$sounds_off: 'assets/images/sounds-off.svg';
 
 // html,2121
 // body {
@@ -319,5 +321,23 @@ body {
 	width: 50px;
 	height: 50px;
 	background: url($fullscreen);
+	background-size: contain;
+}
+
+.sounds{
+	position: absolute;
+	bottom: 0px;
+	left: 50px;
+	width: 50px;
+	height: 50px;
+}
+
+.sounds-on {
+	background: url($sounds_on);
+	background-size: contain;
+}
+
+.sounds-off {
+	background: url($sounds_off);
 	background-size: contain;
 }
