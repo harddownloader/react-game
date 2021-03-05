@@ -111,14 +111,14 @@ function App() {
 
   const didMountNewExplosion = (x, y) => {
     const randomId = makeId(10);
-
+    
     // создаем новый взрыв
     changeExplosions([
       ...explosions,
       {
         id: randomId,
-        x,
-        y,
+        x: x,
+        y: y,
       },
     ]);
   };
@@ -199,7 +199,12 @@ function App() {
           if (isHit) {
             // alert('hit')
             // создаем взрыв
-            didMountNewExplosion(enemyes[q].x, enemyes[q].y);
+            console.log('explosions x', enemyes[q].x);
+            console.log('explosions y', enemyes[q].y);
+            console.log('explosions x clientLeft', currentEnemy.offsetLeft);
+            console.log('explosions y clientTop', currentEnemy.offsetTop);
+            // didMountNewExplosion(enemyes[q].x, enemyes[q].y);
+            didMountNewExplosion(currentEnemy.offsetLeft, currentEnemy.offsetTop);
             // удаляем наш выстрел
             unmountChildBullet(bulletsTmp[i].id);
             // удаляем врага
