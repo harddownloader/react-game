@@ -4,7 +4,6 @@ import Score from '../components/Score';
 import Spaceship from '../components/Spaceship';
 
 function PlayGame() {
-
   return (
     <>
       <Lifes />

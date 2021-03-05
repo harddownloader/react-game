@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Pause() {
-  return{}
+  return {};
 }
 
 export default Pause;

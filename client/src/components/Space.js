@@ -4,12 +4,11 @@ import React, { useRef, useState, useEffect, useContext, useMemo } from 'react';
 
 // задний фон
 function Space() {
-
   return (
     <>
       <div className="sky"></div>
     </>
-  )
+  );
 }
 
 export default Space;

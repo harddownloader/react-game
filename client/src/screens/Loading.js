@@ -1,9 +1,6 @@
-import React, {useState} from 'react';
-
+import React, { useState } from 'react';
 
 function Loading() {
-
-
   return (
     <>
       <p>Loading...</p>

@@ -1,12 +1,18 @@
-import React, { useRef, useState, useEffect, useContext, useMemo, useCallback } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+  useCallback,
+} from 'react';
 
 import useInterval from '../utils/useInterval';
-
 
 function Bullet(props) {
   const BulletY = props.y;
   const BulletX = props.x;
-  const idComponent = props.idComponent;
+  const { idComponent } = props;
 
   // координаты выстрела
   const [posBulletX, setPosBulletX] = useState(BulletX);
@@ -21,13 +27,13 @@ function Bullet(props) {
   useEffect(() => {
     // console.log('new Y bullet');
     setPosBulletY(BulletY);
-  },[BulletY]);
+  }, [BulletY]);
 
   // при предоставлении x - сохраняем его в стейт
   useEffect(() => {
     // console.log('new X bullet');
-    setPosBulletX(BulletX)
-  }, [BulletX])
+    setPosBulletX(BulletX);
+  }, [BulletX]);
 
   // цикл на анимирование полета выстрелла вверх
   useInterval(() => {
@@ -35,18 +41,21 @@ function Bullet(props) {
     // console.log('flag', flag);
 
     // если выстрел ушел за горизонт - удаляем его
-    if(posBulletY < 0) {
-      props.unmountMe(idComponent)
+    if (posBulletY < 0) {
+      props.unmountMe(idComponent);
     }
 
     // если выстрел еще на нашем экране - то двигаем его вверж на 5px
     setPosBulletY(posBulletY - 5);
   }, 10);
 
-
   return (
     <>
-      <div className="bullet" id={idComponent + 'BulletNo'} style={{top: posBulletY + 'px', left: posBulletX + 'px'}}></div>
+      <div
+        className="bullet"
+        id={`${idComponent}BulletNo`}
+        style={{ top: `${posBulletY}px`, left: `${posBulletX}px` }}
+      ></div>
     </>
   );
 }

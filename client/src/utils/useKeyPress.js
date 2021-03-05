@@ -33,7 +33,7 @@ function useKeyPress(targetKey) {
     if (key === targetKey) {
       setKeyPressed(true);
       // keyPressed.current = true
-      console.log('down')
+      console.log('down');
     }
   }
 
@@ -42,7 +42,7 @@ function useKeyPress(targetKey) {
     if (key === targetKey) {
       setKeyPressed(false);
       // keyPressed.current = false
-      console.log('up')
+      console.log('up');
     }
   };
 
