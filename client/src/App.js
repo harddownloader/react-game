@@ -176,8 +176,8 @@ function App() {
       {
         id: randomId,
         type: randomType,
-        x,
-        y,
+        x: x,
+        y: y,
       },
     ]);
   };
@@ -245,7 +245,7 @@ function App() {
   useInterval(() => {
     // если выстрел ушел за горизонт - удаляем его
     if (enemyes.length < gameDifficultyVariables.getMaxEnemyCount()) {
-      const y = 0;
+      const y = -50;
       const maxWidth = window.innerWidth;
       const x = getRandomInt(maxWidth);
       didMountNewEnemy(x, y);
