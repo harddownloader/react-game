@@ -1,4 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, {
+  // useRef,
+  // useState,
+  // useEffect,
+  useContext,
+  // useMemo,
+  // useReducer,
+} from 'react';
 import useStickyState from '../utils/useStickyState'
 import { AppContext } from '../App';
 

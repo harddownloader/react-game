@@ -1,4 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  // useRef,
+  // useState,
+  // useEffect,
+  // useContext,
+  // useMemo,
+  // useReducer,
+} from 'react';
 
 function Sounds(props) {
   // ставим новое значение звуку в игре

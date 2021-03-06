@@ -1,21 +1,21 @@
 import React, {
-  useRef,
-  useState,
-  useEffect,
-  useContext,
-  useMemo,
-  useReducer,
+  // useRef,
+  // useState,
+  // useEffect,
+  // useContext,
+  // useMemo,
+  // useReducer,
 } from 'react';
 
 import useInterval from '../utils/useInterval';
-import useStickyState from '../utils/useStickyState'
+// import useStickyState from '../utils/useStickyState'
 
 function Explosion(props) {
-  const ExplosionX = props.x;
-  const ExplosionY = props.y;
+  // const ExplosionX = props.x;
+  // const ExplosionY = props.y;
 
-  const [posExplosionX, setPosExplosionX] = useStickyState(ExplosionX, 'posExplosionX');
-  const [posExplosionY, setPosExplosionY] = useStickyState(ExplosionY, 'posExplosionY');
+  // const [posExplosionX, setPosExplosionX] = useStickyState(ExplosionX, 'posExplosionX');
+  // const [posExplosionY, setPosExplosionY] = useStickyState(ExplosionY, 'posExplosionY');
 
   // тип картинки
   const [typeExplosion, setTypeExplosion] = useStickyState(1, 'typeExplosion');
@@ -37,7 +37,7 @@ function Explosion(props) {
     <>
       <div
         className={`explosion explosion-part-${typeExplosion}`}
-        style={{ top: `${posExplosionY}px`, left: `${posExplosionX}px` }}
+        style={{ top: `${props.y}px`, left: `${props.x}px` }}
       ></div>
       {/* <div className={`explosion explosion-part-2`} style={{top: '200' + 'px', left: '300' + 'px'}}></div> */}
       {/* <div className={`explosion explosion-part-3`} style={{top: '150' + 'px', left: '300' + 'px'}}></div> */}

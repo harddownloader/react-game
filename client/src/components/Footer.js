@@ -1,4 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  // useRef,
+  // useState,
+  // useEffect,
+  // useContext,
+  // useMemo,
+  // useReducer,
+} from 'react';
 
 import logo from '../assets/images/rs_school_js.svg';
 

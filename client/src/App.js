@@ -431,7 +431,7 @@ function App() {
         bulletsTmp[i].y = newBulletData.y;
       }
       if (bulletsTmp[i].y < 0) {
-        console.log('bulletsTmp[i].y', bulletsTmp[i].y)
+        // console.log('bulletsTmp[i].y', bulletsTmp[i].y)
         unmountChildBullet(bulletId);
       }
     }
