@@ -154,14 +154,44 @@ body {
 // карабль
 #ship {
 	position: absolute;
-	width: 120px;
-	height: 128px;
+	// width: 120px;
+	// height: 128px;
 	top: 70%;
 	left: 50%;
 	margin-left: -50px;
-	background: url($sprite) 180px 157px;
+	// background: url($sprite) 180px 157px;
 	// background-size: contain;
 	z-index: 1000;
+}
+
+.ship-type-1 {
+	width: 65px;
+	height: 70px;
+	background: url($sprite) 565px 102px;
+}
+
+.ship-type-2 {
+	width: 53px;
+	height: 90px;
+	background: url($sprite) 472px 118px;
+}
+
+.ship-type-3 {
+	width: 53px;
+	height: 74px;
+	background: url($sprite) 386px 112px;
+}
+
+.ship-type-4 {
+	width: 88px;
+	height: 103px;
+	background: url($sprite) 304px 130px;
+}
+
+.ship-type-5 {
+	width: 120px;
+	height: 114px;
+	background: url($sprite) 180px 142px;
 }
 
 .explode {

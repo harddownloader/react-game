@@ -26,6 +26,8 @@ function Explosion(props) {
     if (type < 3) {
       changeType(type + 1);
     } else {
+      // ставинем неверный тип чтобы он быстрее скрылся, а не "ждал" доп.ренгера для удаления
+      changeType(type + 1);
       // когда анимация взрыва закончилась - то удаляем компонент
       props.unmountMe();
     }

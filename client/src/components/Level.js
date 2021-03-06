@@ -3,26 +3,26 @@ import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../App';
 
 function Level(props) {
-  const { level, score } = useContext(AppContext);
+  const { level, scoreCount } = useContext(AppContext);
 
   useEffect(() => {
-    const needLvlScore = 1000;
-    const needLvl = 1;
-    if(score > needLvlScore) {
-      props.changeLevel(needLvl+1)
-    } else if(score > needLvlScore*2) {
-      props.changeLevel(needLvl+2)
-    } else if(score > needLvlScore*3) {
-      props.changeLevel(needLvl+3)
-    } else if(score > needLvlScore*4) {
-      props.changeLevel(needLvl+4)
-    } else if(score > needLvlScore*5) {
-      props.changeLevel(needLvl+5)
+    // console.log('level score')
+    const needLvlScore = 200;
+    if(scoreCount >= needLvlScore && scoreCount <= needLvlScore*2) {
+      props.changeLevel(level+1)
+    } else if(scoreCount >= needLvlScore*2 && scoreCount <= needLvlScore*3) {
+      props.changeLevel(level+1)
+    } else if(scoreCount >= needLvlScore*3 && scoreCount <= needLvlScore*4) {
+      props.changeLevel(level+1)
+    } else if(scoreCount >= needLvlScore*4 && scoreCount <= needLvlScore*5) {
+      props.changeLevel(level+1)
+    } else if(scoreCount >= needLvlScore*5 && scoreCount <= needLvlScore*6) {
+      props.changeLevel(level+1)
     }
 
-  }, [score]);
+  }, [scoreCount]);
 
-  
+
 
   return (
     <>

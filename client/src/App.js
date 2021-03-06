@@ -211,10 +211,10 @@ function App() {
           if (isHit) {
             // alert('hit')
             // создаем взрыв
-            console.log('explosions x', enemyes[q].x);
-            console.log('explosions y', enemyes[q].y);
-            console.log('explosions x clientLeft', currentEnemy.offsetLeft);
-            console.log('explosions y clientTop', currentEnemy.offsetTop);
+            // console.log('explosions x', enemyes[q].x);
+            // console.log('explosions y', enemyes[q].y);
+            // console.log('explosions x clientLeft', currentEnemy.offsetLeft);
+            // console.log('explosions y clientTop', currentEnemy.offsetTop);
             // didMountNewExplosion(enemyes[q].x, enemyes[q].y);
             didMountNewExplosion(currentEnemy.offsetLeft, currentEnemy.offsetTop);
             // удаляем наш выстрел
@@ -283,7 +283,8 @@ function App() {
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
 
-    if(level === 1) {
+    if(level === 6) {
+      // для 3го уровня
       const randomId1 = makeId(10);
       const randomId2 = makeId(10);
       const randomId3 = makeId(10);
@@ -304,7 +305,23 @@ function App() {
           id: randomId3,
           x: x - 20,
           y: y,
+        }
+      ]);
+    } else if(level >= 3 && level < 6) {
+      const randomId1 = makeId(10);
+      const randomId2 = makeId(10);
+      setBullets([
+        ...bullets,
+        {
+          id: randomId1,
+          x: x + 20,
+          y: y,
         },
+        {
+          id: randomId2,
+          x: x - 20,
+          y: y,
+        }
       ]);
     } else {
       const randomId = makeId(10);
@@ -315,7 +332,7 @@ function App() {
           id: randomId,
           x: x,
           y: y,
-        },
+        }
       ]);
     }
     
@@ -351,8 +368,20 @@ function App() {
   /* --- ship --- */
   // когда произошло событие движения миши
   const mouseMoveHandler = event => {
-    const colisiaMishu = 10 // 10px сдвига - чтобы нос карабля был на одном уровне с мышкой
-    setPosX(event.clientX - colisiaMishu);
+    let colisiaMishu = 15 // 0px сдвига - так как для малентких караблей не нужен сдвиг
+    if(level === 1) {
+      setPosX(event.clientX + colisiaMishu);
+    } else if(level >= 2 && level < 4) {
+      colisiaMishu = 25
+      setPosX(event.clientX + colisiaMishu);
+    } else if(level === 4) {
+      colisiaMishu = 15
+      setPosX(event.clientX + colisiaMishu);
+    } else if(level >= 5) {
+      colisiaMishu = 10 // 10px сдвига - чтобы нос карабля был на одном уровне с мышкой
+      setPosX(event.clientX - colisiaMishu);
+    }
+
     setPosY(event.clientY);
   };
 
@@ -372,8 +401,8 @@ function App() {
     changeLifeValue(200);
     setEnemys([]);
     setBullets([]);
-    setPosX(0);
-    setPosY(0);
+    setPosX(null);
+    setPosY(null);
     changeLevel(1);
     changeIsGameOver(false);
   };

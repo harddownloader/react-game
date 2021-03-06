@@ -4,20 +4,40 @@ import { AppContext } from '../App';
 
 // карабль
 function Spaceship() {
-  const { shipX, shipY } = useContext(AppContext);
+  const { shipX, shipY, level } = useContext(AppContext);
 
-  // useEffect(() => {
-  //   console.log('new x' + shipX)
-  // }, [shipX]);
+  const [type, setType] = useState(1);
+  const changeType = newType => setType(prev => newType);
 
-  // useEffect(() => {
-  //   console.log('new y' + shipY)
-  // }, [shipY]);
+  useEffect(() => {
+    switch(level) {
+      case 1:
+        changeType(1)
+        break;
+      case 2:
+        changeType(2);
+        break;
+      case 3:
+        changeType(3);
+        break;
+      case 4:
+        changeType(4);
+        break;
+      case 5:
+        changeType(5);
+        break;
+      default:
+        changeType(5);
+    }
+  }, [level]);
 
   return (
     <>
-      <div id="ship" style={{ top: `${shipY}px`, left: `${shipX}px` }}></div>
-      {/* <div id="ship"></div> */}
+      <div
+        id="ship"
+        style={{ top: `${shipY}px`, left: `${shipX}px` }}
+        className={`ship-type-${type}`}
+      ></div>
     </>
   );
 }
