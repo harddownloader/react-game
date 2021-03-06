@@ -42,6 +42,7 @@ import Level from './components/Level'
 import makeId from './utils/generateRandomString';
 import getRandomInt from './utils/generateRandomNumber';
 import useInterval from './utils/useInterval';
+import useStickyState from './utils/useStickyState'
 import getRandomArbitrary from './utils/generateRandomNumberArbitrary';
 import doElsCollide from './utils/isElementOnAnoterElement';
 
@@ -50,36 +51,46 @@ import soundBgSound from './assets/audio/bg.mp3';
 import laserSound from './assets/audio/laser.mp3'; // shot
 import gameOverSound from './assets/audio/warp.mp3'; // game over
 import explosionSound from './assets/audio/explosion.mp3'; // взрыв вражеского карабля
+import clickSound from './assets/audio/click.mp3'
 
 export const AppContext = React.createContext();
 
 function App() {
   // статус игры
-  const [isGameOver, setIsGameOver] = useState(null);
+  const [isGameOver, setIsGameOver] = useStickyState(null, 'isGameOver');
   // для изменения статуса игры
   const changeIsGameOver = status => setIsGameOver(prev => status);
+  // сложность игры
+  const [gameDifficulty, setGameDifficulty] = useStickyState(null, 'gameDifficulty');
+  const changeGameDifficulty = status => setGameDifficulty(prev => status);
+  // статус паузы
+  const [isPauseGame, setIsPauseGame] = useStickyState(false, 'isPauseGame');
+  const toggleIsPauseGame = status => setIsPauseGame(prev => status);
+  // сипсок рекордов
+  const [records, setRecords] = useStickyState([], 'records');
+  const changeRecords = newState => setRecords(prev => newState);
   // кол-во жизней
-  const [lifes, setLifes] = useState(0);
+  const [lifes, setLifes] = useStickyState(0, 'lifes');
   // для изменения кол-ва жизней
   const changeLifes = count => setLifes(prev => count);
 
   // очки игрока
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useStickyState(0, 'score');
   // для изменения кол-ва жизней
   const changeScore = newScore => setScore(prev => newScore);
 
   // уровень жизни(полоска) - 200px
-  const [lifeValue, setLifeValue] = useState(0);
+  const [lifeValue, setLifeValue] = useStickyState(0, 'lifeValue');
   // для изменения уровеня жизни(полоска)
   const changeLifeValue = count => setLifeValue(prev => count);
 
   // координаты выстрела нашего ship
-  const [posBulletX, setPosBulletX] = useState(0);
-  const [posBulletY, setPosBulletY] = useState(0);
-  const [bullets, setBullets] = useState([]);
+  const [posBulletX, setPosBulletX] = useStickyState(0, 'posBulletX');
+  const [posBulletY, setPosBulletY] = useStickyState(0, 'posBulletY');
+  const [bullets, setBullets] = useStickyState([], 'bullets');
 
   // музыка
-  const [isSounds, setIsSounds] = useState(false);
+  const [isSounds, setIsSounds] = useStickyState(false, 'isSounds');
   const toggleIsSounds = status => setIsSounds(prev => status);
 
   /* --- sounds --- */
@@ -91,11 +102,15 @@ function App() {
   const [playGameOver, { stopGameOver }] = useSound(gameOverSound, {
     volume: 1,
   });
+  const [playClickSound, { stopPlayClick }] = useSound(clickSound, {
+    volume: 1,
+  });
   // взрыв вражеского карабля
   const [playExplosion, { stopExplosion }] = useSound(explosionSound, {
     volume: 1,
   });
 
+  // переключаемся между режимом вкл/выкл музыки
   useEffect(() => {
     console.log('isSounds', isSounds);
     if (isSounds) {
@@ -106,21 +121,18 @@ function App() {
   }, [isSounds]);
   /* --- /sounds --- */
 
+
   /* --- lvl --- */
-
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useStickyState(1, "level");
   const changeLevel = newState => setLevel(prev => newState);
-
- 
-
-
   /* --- /lvl --- */
 
-  /* --- взрывы --- */
 
-  const [explosions, setExplosions] = useState([]);
+  /* --- взрывы --- */
+  const [explosions, setExplosions] = useStickyState([], 'explosions');
   const changeExplosions = newState => setExplosions(prev => newState);
 
+  // создаем взрыв
   const didMountNewExplosion = (x, y) => {
     const randomId = makeId(10);
     
@@ -135,6 +147,7 @@ function App() {
     ]);
   };
 
+  // удаляем взрыв
   const unmountChildExplosion = idComponent => {
     const explosionsTmp = explosions;
     // удаляем нужный вырыв из копии стейта игры
@@ -148,8 +161,9 @@ function App() {
   /* ---- враги ----- */
   // враги
 
-  const [enemyes, setEnemys] = useState([]);
+  const [enemyes, setEnemys] = useStickyState([], 'enemyes');
 
+  // создаем врага
   const didMountNewEnemy = (x, y) => {
     const randomId = makeId(10);
     const randomType = getRandomArbitrary(1, 4);
@@ -168,7 +182,7 @@ function App() {
     ]);
   };
 
-  // удалем выстрел если он скрылся за экран
+  // удаляем врага
   const unmountChildEnemy = idComponent => {
     const enemyesTmp = enemyes;
     // удаляем нужного врага
@@ -178,19 +192,65 @@ function App() {
     setEnemys(enemyesTmp);
   };
 
+  // что меняется при изменении уровня сложности
+  const gameDifficultyVariables = {
+    // как часто респамнятся враги
+    getTimerRespawn:function() {
+      if (gameDifficulty === 'easy') {
+        return 3000;
+      } else if (gameDifficulty === 'medium') {
+        return 1000;
+      } else if (gameDifficulty === 'hard') {
+        return 500;
+      }
+    },
+
+    // какое максимальное кол-во врагов может быть на экране в момент
+    getMaxEnemyCount:function() {
+    
+      if (gameDifficulty === 'easy') {
+        return 5;
+      } else if (gameDifficulty === 'medium') {
+        return 6;
+      } else if (gameDifficulty === 'hard') {
+        return 7;
+      }
+      
+    },
+
+    // сколько очков получаем за убитого врага
+    getScoreValueIfShipKilledEnemy: function() {
+      if (gameDifficulty === 'easy') {
+        return 100;
+      } else if (gameDifficulty === 'medium') {
+        return 75;
+      } else if (gameDifficulty === 'hard') {
+        return 50;
+      }
+    },
+
+    // сколько жизней отнимается при ударе нашего карабля
+    getLifeValueMinusIfShipifHitTheShip: function() {
+      if (gameDifficulty === 'easy') {
+        return 50;
+      } else if (gameDifficulty === 'medium') {
+        return 100;
+      } else if (gameDifficulty === 'hard') {
+        return 200;
+      }
+    }
+  }
+
   // цикл на добавление врагов, если их недостаточно
   useInterval(() => {
-    // setFlag(flag + 1);
-    // console.log('flag', flag);
-
     // если выстрел ушел за горизонт - удаляем его
-    if (enemyes.length < 5) {
+    if (enemyes.length < gameDifficultyVariables.getMaxEnemyCount()) {
       const y = 0;
       const maxWidth = window.innerWidth;
       const x = getRandomInt(maxWidth);
       didMountNewEnemy(x, y);
     }
-  }, 3000);
+  }, gameDifficultyVariables.getTimerRespawn());
 
 
 
@@ -222,7 +282,7 @@ function App() {
             // удаляем врага
             unmountChildEnemy(enemyes[q].id);
             // добавляем нам очков
-            changeScore(score + 100);
+            changeScore(score + gameDifficultyVariables.getScoreValueIfShipKilledEnemy());
             // звук вырыва вражеского карабля
             if (isSounds) playExplosion();
           }
@@ -240,7 +300,7 @@ function App() {
           // убиваем пришельца
           unmountChildEnemy(enemyes[q].id);
           // отничаем здовье у нашего карабля
-          changeLifeValue(lifeValue - 10);
+          changeLifeValue(lifeValue - gameDifficultyVariables.getLifeValueMinusIfShipifHitTheShip());
         }
       }
     }
@@ -265,6 +325,68 @@ function App() {
       changeIsGameOver(true);
       // ставим звук завершения игры
       if (isSounds) playGameOver();
+
+
+
+      // записываем результат в таблицу рекордов
+
+      // get date for new record
+      const currentDate = new Date();
+      const currentDayOfMonth = currentDate.getDate();
+      const currentMonth = currentDate.getMonth(); // Be careful! January is 0, not 1
+      const currentYear = currentDate.getFullYear();
+      const currentHours = currentDate.getHours();
+      const currentMinutes = currentDate.getMinutes();
+
+      if (records.length === 5) {
+        const recordsValues = [];
+        const recordsTmp = records;
+        for (let record of recordsTmp) {
+          recordsValues.push(record.recordValue);
+        }
+        const findedMinValueReacord = Math.min.apply(Math, recordsValues);
+
+        // recordsTmp.map((record) => {
+        //   if(record.recordValue === findedMinValueReacord) {
+        //     return {
+        //       recordValue: score,
+        //       recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear + " " + currentHours + ":" + currentMinutes
+        //     }
+        //   }
+        // })
+        for(let i=0; i<recordsTmp.length;i++) {
+          if(recordsTmp[i].recordValue === findedMinValueReacord) {
+            recordsTmp[i] = {
+              recordValue: score,
+              recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear + " " + currentHours + ":" + currentMinutes
+            }
+          }
+        }
+        console.log('new record', {
+          recordValue: score,
+          recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear + " " + currentHours + ":" + currentMinutes
+        })
+        console.log('records', records)
+        console.log('recordsTmp', recordsTmp)
+        // сохраняем новый рекорд
+        changeRecords(
+          [
+            ...recordsTmp
+          ]
+        );
+      } else if (records.length < 5) {
+        // сохраняем новый рекорд
+        changeRecords(
+          [
+            ...records,
+            {
+              recordValue: score,
+              recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear
+            }
+          ]
+        );
+      }
+      
     }
   }, [lifes]);
 
@@ -272,8 +394,8 @@ function App() {
 
   /* ---- крабль ---- */
   // координаты карабля
-  const [posX, setPosX] = useState(0);
-  const [posY, setPosY] = useState(0);
+  const [posX, setPosX] = useStickyState(0, 'posX');
+  const [posY, setPosY] = useStickyState(0, 'posY');
 
   /* --- выстрелы нашего карабля --- */
 
@@ -282,8 +404,19 @@ function App() {
     
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
-
-    if(level === 6) {
+    if(level > 6) {
+      const randomId = makeId(10);
+      // создаем новый выстрел
+      setBullets([
+        ...bullets,
+        {
+          id: randomId,
+          x: x,
+          y: y,
+          bulletType: 4
+        }
+      ]);
+    } else if(level === 6) {
       // для 3го уровня
       const randomId1 = makeId(10);
       const randomId2 = makeId(10);
@@ -295,16 +428,19 @@ function App() {
           id: randomId1,
           x: x + 20,
           y: y,
+          bulletType: 3,
         },
         {
           id: randomId2,
           x: x,
           y: y,
+          bulletType: 3
         },
         {
           id: randomId3,
           x: x - 20,
           y: y,
+          bulletType: 3
         }
       ]);
     } else if(level >= 3 && level < 6) {
@@ -316,11 +452,13 @@ function App() {
           id: randomId1,
           x: x + 20,
           y: y,
+          bulletType: 2,
         },
         {
           id: randomId2,
           x: x - 20,
           y: y,
+          bulletType: 2,
         }
       ]);
     } else {
@@ -332,6 +470,7 @@ function App() {
           id: randomId,
           x: x,
           y: y,
+          bulletType: 1
         }
       ]);
     }
@@ -340,7 +479,7 @@ function App() {
     if (isSounds) playLaser();
   };
 
-  // удалем выстрел если он скрылся за экран
+  // удалем выстрел
   const unmountChildBullet = idComponent => {
     const bulletsTmp = bullets;
     // удаляем нужный выстрел из копии стейта игры
@@ -355,15 +494,56 @@ function App() {
   useEffect(() => {
     window.addEventListener('mousemove', mouseMoveHandler);
     window.addEventListener('mousedown', mouseDownHandler);
-    // window.addEventListener('keypress', fullScreenHandler);
+    window.addEventListener('keydown', keypressHandler);
 
     return () => {
       window.removeEventListener('mousemove', mouseMoveHandler);
       window.removeEventListener('mousedown', mouseDownHandler);
-      // window.addEventListener('keypress', fullScreenHandler)
+      window.removeEventListener('keydown', keypressHandler)
     };
   });
   /* --- /ship control --- */
+
+
+  /* --- keyboard --- */
+  const keypressHandler = event => {
+    console.log(event.code)
+    if(event.code === 'Escape') {
+      if (isPauseGame) {
+        toggleIsPauseGame(false)
+      } else {
+        toggleIsPauseGame(true)
+      }
+    }
+
+    if(event.code === 'KeyW' || event.code === 'ArrowUp') {
+        console.log('up');
+        setPosX(posX);
+        setPosY(posY - 20);
+    }
+    if(event.code === 'KeyS' || event.code === 'ArrowDown') {
+        console.log('down');
+        setPosX(posX);
+        setPosY(posY + 20);
+    }
+    if(event.code === 'KeyA' || event.code === 'ArrowLeft') {
+        console.log('left');
+        setPosX(posX - 20);
+        setPosY(posY);
+    }
+    if(event.code === 'KeyD' || event.code === 'ArrowRight') {
+        console.log('rigth');
+        setPosX(posX + 20);
+        setPosY(posY);
+    }
+    if(event.code === 'Space') {
+        console.log('space - fire');
+        didMountNewBullet(posX, posY);
+    }
+      
+  }
+  /* --- /keyboard --- */
+
 
   /* --- ship --- */
   // когда произошло событие движения миши
@@ -389,13 +569,22 @@ function App() {
   const mouseDownHandler = event => {
     console.log('mouseDownHandler');
     // создаем выстрел
-    didMountNewBullet(event.clientX, event.clientY);
+    if(isGameOver || isPauseGame) {
+      // если мы в меню
+      // создаем звук клика
+    if (isSounds) playClickSound();
+    } else {
+      // если мы в игре
+      didMountNewBullet(event.clientX, event.clientY);
+    }
+    
   };
   /* --- /ship--- */
 
   /* --- game --- */
-  const startNewGame = () => {
+  const startNewGame = (difficulty) => {
     console.log('isGameOver in startNewGame', isGameOver);
+    changeGameDifficulty(difficulty)
     changeLifes(3);
     changeScore(0);
     changeLifeValue(200);
@@ -405,6 +594,7 @@ function App() {
     setPosY(null);
     changeLevel(1);
     changeIsGameOver(false);
+    toggleIsPauseGame(false)
   };
   /* --- /game --- */
 
@@ -412,25 +602,76 @@ function App() {
   // console.log('isGameOver', isGameOver)
   if (lifes === 0 && isGameOver) {
     return (
-      <>
+      <AppContext.Provider
+        value={{
+          lifesCount: lifes,
+          scoreCount: score,
+          lifeValue,
+          shipX: posX,
+          shipY: posY,
+          BulletY: posBulletY,
+          BulletX: posBulletX,
+          enemyes,
+          bullets,
+          level,
+          records: records
+        }}
+      >
         <Space />
         <Menu title="GAME OVER" startNewGame={startNewGame} />
         <Fullscreen />
         <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds} />
         <Footer />
-      </>
+      </AppContext.Provider>
     );
-  }
-  if (lifes === 0 && !isGameOver) {
+  } else if (lifes === 0 && !isGameOver) {
     return (
-      <>
+      <AppContext.Provider
+        value={{
+          lifesCount: lifes,
+          scoreCount: score,
+          lifeValue,
+          shipX: posX,
+          shipY: posY,
+          BulletY: posBulletY,
+          BulletX: posBulletX,
+          enemyes,
+          bullets,
+          level,
+          records: records
+        }}
+      >
         <Space />
         <Menu title="SPACE BATTLE" startNewGame={startNewGame} />
         <Fullscreen />
         <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds} />
         <Footer />
-      </>
+      </AppContext.Provider>
     );
+  } else if (lifes !== 0 && isPauseGame) {
+    return (
+      <AppContext.Provider
+        value={{
+          lifesCount: lifes,
+          scoreCount: score,
+          lifeValue,
+          shipX: posX,
+          shipY: posY,
+          BulletY: posBulletY,
+          BulletX: posBulletX,
+          enemyes,
+          bullets,
+          level,
+          records: records
+        }}
+      >
+        <Space />
+        <Menu title="PAUSE" startNewGame={startNewGame} />
+        <Fullscreen />
+        <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds} />
+        <Footer />
+      </AppContext.Provider>
+    )
   }
   return (
     <AppContext.Provider
@@ -444,7 +685,8 @@ function App() {
         BulletX: posBulletX,
         enemyes,
         bullets,
-        level
+        level,
+        records: records,
       }}
     >
       <Space />
@@ -459,6 +701,7 @@ function App() {
         <Bullet
           key={item.id}
           idComponent={item.id}
+          bulletType={item.bulletType}
           x={item.x}
           y={item.y}
           unmountMe={unmountChildBullet}

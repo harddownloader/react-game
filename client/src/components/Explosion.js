@@ -8,26 +8,27 @@ import React, {
 } from 'react';
 
 import useInterval from '../utils/useInterval';
+import useStickyState from '../utils/useStickyState'
 
 function Explosion(props) {
   const ExplosionX = props.x;
   const ExplosionY = props.y;
 
-  const [posExplosionX, setPosExplosionX] = useState(ExplosionX);
-  const [posExplosionY, setPosExplosionY] = useState(ExplosionY);
+  const [posExplosionX, setPosExplosionX] = useStickyState(ExplosionX, 'posExplosionX');
+  const [posExplosionY, setPosExplosionY] = useStickyState(ExplosionY, 'posExplosionY');
 
   // тип картинки
-  const [type, setType] = useState(1);
-  const changeType = newScore => setType(prev => newScore);
+  const [typeExplosion, setTypeExplosion] = useStickyState(1, 'typeExplosion');
+  const changeTypeExplosion = newScore => setTypeExplosion(prev => newScore);
 
   useInterval(() => {
     // setFlag(flag + 1);
     // console.log('flag', flag);
-    if (type < 3) {
-      changeType(type + 1);
+    if (typeExplosion < 3) {
+      changeTypeExplosion(typeExplosion + 1);
     } else {
       // ставинем неверный тип чтобы он быстрее скрылся, а не "ждал" доп.ренгера для удаления
-      changeType(type + 1);
+      changeTypeExplosion(typeExplosion + 1);
       // когда анимация взрыва закончилась - то удаляем компонент
       props.unmountMe();
     }
@@ -35,7 +36,7 @@ function Explosion(props) {
   return (
     <>
       <div
-        className={`explosion explosion-part-${type}`}
+        className={`explosion explosion-part-${typeExplosion}`}
         style={{ top: `${posExplosionY}px`, left: `${posExplosionX}px` }}
       ></div>
       {/* <div className={`explosion explosion-part-2`} style={{top: '200' + 'px', left: '300' + 'px'}}></div> */}

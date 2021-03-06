@@ -1,28 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import useStickyState from '../utils/useStickyState'
+import { AppContext } from '../App';
 
 function Menu(props) {
-  const [selected, setSelected] = useState('easy');
+  const { level, scoreCount, records } = useContext(AppContext);
+
+  const [selected, setSelected] = useStickyState('easy', 'selected');
 
   const onValueChange = event => {
     setSelected(event.target.value);
   };
 
-  // const formSubmit(event) {
-  //   event.preventDefault();
-  //   console.log(this.state.selectedOption)
+  // const getRecordsTable = () => {
+  //   if (records.length > 1) {
+  //     records.map((item, index) => {
+  //       return (<p className="record-item">{index}. {item.recordValue}</p>)
+  //     })
+  //   } else {
+  //     return (<p className="record-item">no records yet...</p>);
+  //   }
   // }
+  
+  
+
+  const getTextToContinueGame = () => {
+    return (<p className="sub-title" >Press "Esc" to continue game</p>)
+  }
+
+  const getScoreResult = () => {
+      return (<p className="sub-title" >Your score:  <span className="menu-score-result" >{scoreCount}</span></p>)
+  }
+
+  const getLvlResult = () => {
+    return(<p className="sub-title" >Your lvl: <span className="menu-lvl-result" >{level}</span></p>)
+  }
+
+  const getFirstSubTitle = () => {
+    if (props.title === 'PAUSE') {
+      return getTextToContinueGame()
+    } else {
+      return getScoreResult()
+    }
+  }
+
+  const getSecondSubTitle = () => {
+    if (props.title === 'PAUSE') {
+      return(<p className="sub-title" >OR start new game:</p>)
+    } else {
+      return getLvlResult()
+    }
+  }
+
+  
+
 
   return (
     <>
       <div id="menu">
         <div className="menu__heading">
           <h1 className="menu__title">{props.title}</h1>
+          {getFirstSubTitle()}
+          {getSecondSubTitle()}
         </div>
 
+        
+
         <div className="menu__wrap">
-          <button className="menu__btn" onClick={e => props.startNewGame()}>
+          <button className="menu__btn" onClick={e => props.startNewGame(selected)}>
             New Game
           </button>
+
+          <div className="table-records">
+            <h3 className="records-title">Top 5 records:</h3>
+             
+            {records.length >= 1 ?
+            records.map((item, index) => {
+              return (
+                <p className="record-item" key={index}>
+                  <span className="record-number">{index + 1}. </span>
+                  <span className="record-date">{item.recordDate}</span> -
+                  <span className="record-score"> {item.recordValue}</span>
+                </p>
+              )
+            })
+            : <p className="record-item">no records yet...</p>}
+          </div>
 
           {/* lvl */}
           <form>

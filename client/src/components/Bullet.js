@@ -8,37 +8,31 @@ import React, {
 } from 'react';
 
 import useInterval from '../utils/useInterval';
+import useStickyState from '../utils/useStickyState'
+
 
 function Bullet(props) {
+
   const BulletY = props.y;
   const BulletX = props.x;
-  const { idComponent } = props;
+  const { idComponent, bulletType } = props;
 
   // координаты выстрела
-  const [posBulletX, setPosBulletX] = useState(BulletX);
-  const [posBulletY, setPosBulletY] = useState(BulletY);
-  // const [flag, setFlag] = useState(0);
-
-  // const onBulletChangedX = useCallback((newValue) => setPosBulletX(newValue), []);
-  // const onBulletChangedY = useCallback((newValue) => setPosBulletY(newValue), []);
-  // const changeFlag = useCallback((newValue) => setFlag(newValue), []);
+  const [posBulletX, setPosBulletX] = useStickyState(BulletX, 'posBulletX');
+  const [posBulletY, setPosBulletY] = useStickyState(BulletY, 'posBulletY');
 
   // при предоставлении y - сохраняем его в стейт
   useEffect(() => {
-    // console.log('new Y bullet');
     setPosBulletY(BulletY);
   }, [BulletY]);
 
   // при предоставлении x - сохраняем его в стейт
   useEffect(() => {
-    // console.log('new X bullet');
     setPosBulletX(BulletX);
   }, [BulletX]);
 
   // цикл на анимирование полета выстрелла вверх
   useInterval(() => {
-    // setFlag(flag + 1);
-    // console.log('flag', flag);
 
     // если выстрел ушел за горизонт - удаляем его
     if (posBulletY < 0) {
@@ -52,7 +46,7 @@ function Bullet(props) {
   return (
     <>
       <div
-        className="bullet"
+        className={`bullet bullet-type-${bulletType}`}
         id={`${idComponent}BulletNo`}
         style={{ top: `${posBulletY}px`, left: `${posBulletX}px` }}
       ></div>

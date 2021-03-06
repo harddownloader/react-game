@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import useStickyState from '../utils/useStickyState'
+
 
 function Fullscreen() {
   const toggleFullScreen = () => {
@@ -9,7 +11,7 @@ function Fullscreen() {
     }
   };
 
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useStickyState(false, 'isFullScreen');
   const toggleIsFullScreen = status => setIsFullScreen(prev => status);
 
   useEffect(() => {

@@ -3,8 +3,6 @@ import React, { useRef, useState, useEffect, useContext } from 'react';
 import { AppContext } from '../App';
 
 function Lifes() {
-  // console.log('lifes render')
-
   const { lifesCount } = useContext(AppContext);
 
   const lifesList = [];
