@@ -7,7 +7,7 @@ import React, {
   // useReducer,
 } from 'react';
 
-function useInterval(callback, delay) {
+function useTimeout(callback, delay) {
   const savedCallback = useRef();
 
   // Remember the latest callback.
@@ -15,13 +15,13 @@ function useInterval(callback, delay) {
     savedCallback.current = callback;
   }, [callback]);
 
-  // Set up the interval.
+  // Set up the timout.
   useEffect(() => {
-    const id = setInterval(() => {
+    const id = setTimeout(() => {
       savedCallback.current();
     }, delay);
-    return () => clearInterval(id);
+    return () => clearTimeout(id);
   }, [delay]);
 }
 
-export default useInterval;
+export default useTimeout;

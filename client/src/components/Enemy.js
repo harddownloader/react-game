@@ -1,16 +1,16 @@
 import React, {
-  useRef,
-  useState,
-  useEffect,
-  useContext,
-  useMemo,
-  useReducer,
+  // useRef,
+  // useState,
+  // useEffect,
+  // useContext,
+  // useMemo,
+  // useReducer,
 } from 'react';
 
 // utils
 import useInterval from '../utils/useInterval';
 import getRandomArbitrary from '../utils/generateRandomNumberArbitrary';
-import useStickyState from '../utils/useStickyState'
+// import useStickyState from '../utils/useStickyState'
 
 
 // context
@@ -26,47 +26,61 @@ const Enemy = props => {
   const { idComponent } = props;
 
   // координаты выстрела
-  const [posEnemyX, setPosEnemyX] = useStickyState(EnemyX, 'posEnemyX');
-  const [posEnemyY, setPosEnemyY] = useStickyState(EnemyY, 'posEnemyY');
+  // const [posEnemyX, setPosEnemyX] = useStickyState(EnemyX, 'posEnemyX');
+  // const [posEnemyY, setPosEnemyY] = useStickyState(EnemyY, 'posEnemyY');
 
-  useEffect(() => {
-    // console.log('new Y Enemy');
-    setPosEnemyY(EnemyY);
-  }, [EnemyY]);
+  // useEffect(() => {
+  //   // console.log('new Y Enemy');
+  //   setPosEnemyY(EnemyY);
+  // }, [EnemyY]);
 
-  useEffect(() => {
-    // console.log('new X Enemy');
-    setPosEnemyX(EnemyX);
-  }, [EnemyX]);
+  // useEffect(() => {
+  //   // console.log('new X Enemy');
+  //   setPosEnemyX(EnemyX);
+  // }, [EnemyX]);
 
 
   // цикл анимации движения врага
   useInterval(() => {
-
+    
     const outSideY = window.innerHeight + 10;
     // если выстрел ушел за горизонт - удаляем его
-    if (posEnemyY > outSideY) {
+    if (EnemyY > outSideY) {
       props.unmountMe(idComponent);
     }
 
-    setPosEnemyY(posEnemyY + 2);
+    // setPosEnemyY(posEnemyY + 2);
+    const needNewY = props.y + 20;
+    
     // случайны "+" или "-", от случайного числа
     const getBooleanPlusOrMinus = getRandomArbitrary(0, 1);
     if (getBooleanPlusOrMinus) {
       // если true - то + 3px
-      setPosEnemyX(posEnemyX + getRandomArbitrary(0, 3));
+      // setPosEnemyX(posEnemyX + getRandomArbitrary(0, 3));
+      props.changeSpecialEnemy(idComponent, {
+        x: (EnemyX + getRandomArbitrary(0, 60)),
+        y: needNewY
+      })
+      // console.log('changeSpecialEnemy', {
+      //   x: (EnemyX + getRandomArbitrary(0, 15)),
+      //   y: needNewY
+      // })
     } else {
       // если false - то - 3px
-      setPosEnemyX(posEnemyX - getRandomArbitrary(0, 3));
+      // setPosEnemyX(posEnemyX - getRandomArbitrary(0, 3));
+      props.changeSpecialEnemy(idComponent, {
+        x: (EnemyX - getRandomArbitrary(0, 60)),
+        y: needNewY
+      })
     }
-  }, 50);
+  }, 500);
 
   return (
     <>
       <div
         className={`enemy enemy-type-${EmenyType}`}
         id={`${idComponent}EnemyNo`}
-        style={{ top: `${posEnemyY}px`, left: `${posEnemyX}px` }}
+        style={{ top: `${EnemyY}px`, left: `${EnemyX}px` }}
       ></div>
     </>
   );

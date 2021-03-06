@@ -112,7 +112,7 @@ function App() {
 
   // переключаемся между режимом вкл/выкл музыки
   useEffect(() => {
-    console.log('isSounds', isSounds);
+    // console.log('isSounds', isSounds);
     if (isSounds) {
       playBg();
     } else {
@@ -162,6 +162,29 @@ function App() {
   // враги
 
   const [enemyes, setEnemys] = useStickyState([], 'enemyes');
+  // const changeEmenyes = (newState) => {prev => newState}
+
+  // обновляем координаты врага (вызывается из дочернего компонента - т.е. компонента врага)
+  const changeSpecialEnemy = (enemyId, newEnemyData) => {
+    const enemyesTmp = enemyes;
+    // console.log(enemyes)
+    for(let i=0; i<enemyesTmp.length; i++) {
+      // console.log('enemyesTmp[i].id', enemyesTmp[i].id)
+      // console.log('enemyId', enemyId)
+      // console.log(enemyesTmp[i].id == enemyId)
+      if(enemyesTmp[i].id == enemyId) {
+        // console.log('i find enemy')
+        enemyesTmp[i].x = newEnemyData.x;
+        enemyesTmp[i].y = newEnemyData.y;
+      }
+    }
+    // console.log('newEnemyData', enemyId)
+    // console.log('enemyes', enemyes)
+    // сохраняем обновленный массив врагов
+    setEnemys([
+      ...enemyesTmp
+    ]);
+  }
 
   // создаем врага
   const didMountNewEnemy = (x, y) => {
@@ -362,12 +385,12 @@ function App() {
             }
           }
         }
-        console.log('new record', {
-          recordValue: score,
-          recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear + " " + currentHours + ":" + currentMinutes
-        })
-        console.log('records', records)
-        console.log('recordsTmp', recordsTmp)
+        // console.log('new record', {
+        //   recordValue: score,
+        //   recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear + " " + currentHours + ":" + currentMinutes
+        // })
+        // console.log('records', records)
+        // console.log('recordsTmp', recordsTmp)
         // сохраняем новый рекорд
         changeRecords(
           [
@@ -398,6 +421,26 @@ function App() {
   const [posY, setPosY] = useStickyState(0, 'posY');
 
   /* --- выстрелы нашего карабля --- */
+
+  const changeSpecialBullet = (bulletId, newBulletData) => {
+    const bulletsTmp = bullets;
+    for(let i=0; i<bulletsTmp.length; i++) {
+      
+      if(bulletsTmp[i].id == bulletId) {
+        bulletsTmp[i].x = newBulletData.x;
+        bulletsTmp[i].y = newBulletData.y;
+      }
+      if (bulletsTmp[i].y < 0) {
+        console.log('bulletsTmp[i].y', bulletsTmp[i].y)
+        unmountChildBullet(bulletId);
+      }
+    }
+    
+    // сохраняем обновленный массив выстрелов
+    setBullets([
+      ...bulletsTmp
+    ]);
+  }
 
   // добавляем новый выстрел в список выстрелов
   const didMountNewBullet = (x, y) => {
@@ -704,7 +747,8 @@ function App() {
           bulletType={item.bulletType}
           x={item.x}
           y={item.y}
-          unmountMe={unmountChildBullet}
+          // unmountMe={unmountChildBullet}
+          changeSpecialBullet={changeSpecialBullet}
         />
       ))}
       <LifeBar />
@@ -729,6 +773,7 @@ function App() {
           y={item.y}
           type={item.type}
           unmountMe={unmountChildEnemy}
+          changeSpecialEnemy={changeSpecialEnemy}
         />
       ))}
       {/* уровень */}
