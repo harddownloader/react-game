@@ -35,6 +35,8 @@ import Enemy from './components/Enemy';
 import Explosion from './components/Explosion';
 // footer
 import Footer from './components/Footer';
+// level
+import Level from './components/Level'
 
 // utils
 import makeId from './utils/generateRandomString';
@@ -103,6 +105,16 @@ function App() {
     }
   }, [isSounds]);
   /* --- /sounds --- */
+
+  /* --- lvl --- */
+
+  const [level, setLevel] = useState(1);
+  const changeLevel = newState => setLevel(prev => newState);
+
+ 
+
+
+  /* --- /lvl --- */
 
   /* --- взрывы --- */
 
@@ -267,19 +279,46 @@ function App() {
 
   // добавляем новый выстрел в список выстрелов
   const didMountNewBullet = (x, y) => {
-    const randomId = makeId(10);
+    
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
 
-    // создаем новый выстрел
-    setBullets([
-      ...bullets,
-      {
-        id: randomId,
-        x,
-        y,
-      },
-    ]);
+    if(level === 1) {
+      const randomId1 = makeId(10);
+      const randomId2 = makeId(10);
+      const randomId3 = makeId(10);
+      // создаем новый выстрел
+      setBullets([
+        ...bullets,
+        {
+          id: randomId1,
+          x: x + 20,
+          y: y,
+        },
+        {
+          id: randomId2,
+          x: x,
+          y: y,
+        },
+        {
+          id: randomId3,
+          x: x - 20,
+          y: y,
+        },
+      ]);
+    } else {
+      const randomId = makeId(10);
+      // создаем новый выстрел
+      setBullets([
+        ...bullets,
+        {
+          id: randomId,
+          x: x,
+          y: y,
+        },
+      ]);
+    }
+    
     // создаем звук выстрела
     if (isSounds) playLaser();
   };
@@ -312,7 +351,8 @@ function App() {
   /* --- ship --- */
   // когда произошло событие движения миши
   const mouseMoveHandler = event => {
-    setPosX(event.clientX);
+    const colisiaMishu = 10 // 10px сдвига - чтобы нос карабля был на одном уровне с мышкой
+    setPosX(event.clientX - colisiaMishu);
     setPosY(event.clientY);
   };
 
@@ -334,6 +374,7 @@ function App() {
     setBullets([]);
     setPosX(0);
     setPosY(0);
+    changeLevel(1);
     changeIsGameOver(false);
   };
   /* --- /game --- */
@@ -374,11 +415,12 @@ function App() {
         BulletX: posBulletX,
         enemyes,
         bullets,
+        level
       }}
     >
       <Space />
-      <pre>x - {posX}</pre>
-      <pre>y - {posY}</pre>
+      {/* <pre>x - {posX}</pre>
+      <pre>y - {posY}</pre> */}
       <Lifes />
       <Score />
       <Spaceship />
@@ -417,6 +459,8 @@ function App() {
           unmountMe={unmountChildEnemy}
         />
       ))}
+      {/* уровень */}
+      <Level changeLevel={changeLevel} />
     </AppContext.Provider>
   );
 }
