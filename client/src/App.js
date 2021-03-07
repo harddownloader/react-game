@@ -60,6 +60,8 @@ function App() {
   const [isGameOver, setIsGameOver] = useStickyState(null, 'isGameOver');
   // для изменения статуса игры
   const changeIsGameOver = status => setIsGameOver(prev => status);
+  // переменная для обозначния что игру только что запустили и еще не играми
+  const [isStarting, setIsStarting] = useStickyState(true, 'isStarting');
   // сложность игры
   const [gameDifficulty, setGameDifficulty] = useStickyState(null, 'gameDifficulty');
   const changeGameDifficulty = status => setGameDifficulty(prev => status);
@@ -623,7 +625,7 @@ function App() {
   const mouseDownHandler = event => {
     console.log('mouseDownHandler');
     // создаем выстрел
-    if(isGameOver || isPauseGame) {
+    if(isGameOver || isPauseGame || isStarting) {
       // если мы в меню
       // создаем звук клика
     if (isSounds) playClickSound();
@@ -638,6 +640,7 @@ function App() {
   /* --- game --- */
   const startNewGame = (difficulty) => {
     console.log('isGameOver in startNewGame', isGameOver);
+    setIsStarting(false)
     changeGameDifficulty(difficulty)
     changeLifes(3);
     changeScore(0);
