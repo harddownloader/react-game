@@ -202,7 +202,7 @@ function App() {
   // создаем врага
   const didMountNewEnemy = (x, y) => {
     const randomId = makeId(10);
-    const randomType = getRandomArbitrary(1, 4);
+    const randomType = getRandomArbitrary(1, 8);
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
 

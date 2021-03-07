@@ -81,12 +81,15 @@ const Enemy = props => {
   useInterval(() => {
     
     const outSideY = window.innerHeight + 10;
+    const outSideXmax = window.innerWidth + 30;
+    // const outSideXmin = window.innerWidth - EnemyX;
+    // console.log('x outside', EnemyX < 0)
     // если выстрел ушел за горизонт - удаляем его
-    if (EnemyY > outSideY) {
+    if (EnemyY > outSideY || EnemyX > outSideXmax || EnemyX < 0) {
+      // console.log('unmound enemy')
       props.unmountChildEnemy(idComponent);
     }
 
-    // setPosEnemyY(posEnemyY + 2);
     const needNewY = props.y + 20;
     
     // случайны "+" или "-", от случайного числа

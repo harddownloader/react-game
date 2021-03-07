@@ -303,6 +303,22 @@ body {
 	background: url($sprite) -64px 225px;
 }
 
+.enemy-type-5 {
+	background: url($sprite) -146px 512px;
+}
+
+.enemy-type-6 {
+	background: url($sprite) -146px 413px;
+}
+
+.enemy-type-7 {
+	background: url($sprite) -146px 319px;
+}
+
+.enemy-type-8 {
+	background: url($sprite) -146px 225px;
+}
+
 // анимация взрыва
 .explosion {
 	position: absolute;
