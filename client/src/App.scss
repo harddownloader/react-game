@@ -440,7 +440,7 @@ body {
 }
 
 // sounds
-.sounds{
+.sounds {
 	position: absolute;
 	bottom: 0px;
 	left: 50px;
@@ -456,6 +456,20 @@ body {
 .sounds-off {
 	background: url($sounds_off);
 	background-size: contain;
+}
+// volume control
+.sounds-volume {
+	position: absolute;
+	bottom: 0;
+	#sounds-volume-ranger {
+		position: absolute;
+		bottom: 18px;
+		left: 100px;
+	}
+
+	#sounds-volume-ranger.hide {
+		display: none;
+	}
 }
 
 // footer

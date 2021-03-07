@@ -92,22 +92,25 @@ function App() {
   // музыка
   const [isSounds, setIsSounds] = useStickyState(false, 'isSounds');
   const toggleIsSounds = status => setIsSounds(prev => status);
+  // уровень громкости
+  const [soundValue, setSoundValue] = useStickyState(0, 'soundValue');
+  const changeSoundValue = newVal => setSoundValue(prev => newVal);
 
   /* --- sounds --- */
   // bg
-  const [playBg, { stop }] = useSound(soundBgSound, { volume: 1 });
+  const [playBg, { stop }] = useSound(soundBgSound, { volume: Number(soundValue) });
   // laser
-  const [playLaser, { stopLaser }] = useSound(laserSound, { volume: 1 });
+  const [playLaser, { stopLaser }] = useSound(laserSound, { volume: Number(soundValue) });
   // game over
   const [playGameOver, { stopGameOver }] = useSound(gameOverSound, {
-    volume: 1,
+    volume: Number(soundValue),
   });
   const [playClickSound, { stopPlayClick }] = useSound(clickSound, {
-    volume: 1,
+    volume: Number(soundValue),
   });
   // взрыв вражеского карабля
   const [playExplosion, { stopExplosion }] = useSound(explosionSound, {
-    volume: 1,
+    volume: Number(soundValue),
   });
 
   // переключаемся между режимом вкл/выкл музыки
@@ -695,7 +698,12 @@ function App() {
         <Space />
         <Menu title="SPACE BATTLE" startNewGame={startNewGame} />
         <Fullscreen />
-        <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds} />
+        <Sounds
+          toggleIsSounds={toggleIsSounds}
+          isSounds={isSounds}
+          changeSoundValue={changeSoundValue}
+          soundValue={soundValue}
+        />
         <Footer />
       </AppContext.Provider>
     );
@@ -719,7 +727,12 @@ function App() {
         <Space />
         <Menu title="PAUSE" startNewGame={startNewGame} />
         <Fullscreen />
-        <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds} />
+        <Sounds
+          toggleIsSounds={toggleIsSounds}
+          isSounds={isSounds}
+          changeSoundValue={changeSoundValue}
+          soundValue={soundValue}
+        />
         <Footer />
       </AppContext.Provider>
     )
