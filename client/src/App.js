@@ -80,6 +80,8 @@ function App() {
   // таймер игры
   const [timerSec, setTimerSec] = useStickyState(0, 'timerSec');
   const [timerMin, setTimerMin] = useStickyState(0, 'timerMin');
+  // отображение фона
+  const [spaceType, setSpaceType] = useStickyState("1", 'spaceType');
 
   // очки игрока
   const [score, setScore] = useStickyState(0, 'score');
@@ -681,10 +683,23 @@ function App() {
           records: records
         }}
       >
-        <Space />
-        <Menu title="GAME OVER" startNewGame={startNewGame} />
+        <Space
+          spaceType={spaceType}
+          // setSpaceType={setSpaceType}
+        />
+        <Menu
+          title="GAME OVER"
+          startNewGame={startNewGame}
+          spaceType={spaceType}
+          setSpaceType={setSpaceType}
+        />
         <Fullscreen />
-        <Sounds toggleIsSounds={toggleIsSounds} isSounds={isSounds} />
+        <Sounds
+          toggleIsSounds={toggleIsSounds}
+          isSounds={isSounds}
+          changeSoundValue={changeSoundValue}
+          soundValue={soundValue}
+        />
         <Footer />
       </AppContext.Provider>
     );
@@ -705,7 +720,10 @@ function App() {
           records: records
         }}
       >
-        <Space />
+        <Space
+          spaceType={spaceType}
+          setSpaceType={setSpaceType}
+        />
         <Menu title="SPACE BATTLE" startNewGame={startNewGame} />
         <Fullscreen />
         <Sounds
@@ -734,8 +752,16 @@ function App() {
           records: records
         }}
       >
-        <Space />
-        <Menu title="PAUSE" startNewGame={startNewGame} />
+        <Space
+          spaceType={spaceType}
+          // setSpaceType={setSpaceType}
+        />
+        <Menu
+          title="PAUSE"
+          startNewGame={startNewGame}
+          spaceType={spaceType}
+          setSpaceType={setSpaceType}
+        />
         <Fullscreen />
         <Sounds
           toggleIsSounds={toggleIsSounds}
@@ -765,7 +791,10 @@ function App() {
         isSounds
       }}
     >
-      <Space />
+      <Space
+          spaceType={spaceType}
+          // setSpaceType={setSpaceType}
+        />
       {/* <pre>x - {posX}</pre>
       <pre>y - {posY}</pre> */}
       <Lifes />

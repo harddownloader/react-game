@@ -1,7 +1,6 @@
-// $spaceBg: 'assets/images/space_bg1.jpeg';
-
 $sprite: 'assets/images/sprite.png';
-$space_bg: 'assets/images/space-bg.jpg';
+$space_bg1: 'assets/images/space-bg.jpg';
+$space_bg2: 'assets/images/bg2.jpg';
 // $enemy: 'assets/images/enemy.png';
 
 $planet1: 'assets/images/planet1.png';
@@ -81,7 +80,7 @@ body {
 	top: -630px; left: 0; bottom: 0; right: 0;
 	width: 100%;
 	opacity: 1;
-	background: url($space_bg) repeat;
+	
 	-webkit-animation: backdrop_roll linear 100s infinite;
 	-moz-animation: backdrop_roll linear 100s infinite;
 	-ms-animation: backdrop_roll linear 100s infinite;
@@ -94,6 +93,16 @@ body {
 @-ms-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
 @-o-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
 @keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+
+.sky-1 {
+	background: url($space_bg1) repeat;
+}
+
+.sky-2 {
+	background: url($space_bg2) repeat;
+}
+
+
 
 // очки игрока
 #score {

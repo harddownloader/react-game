@@ -13,9 +13,14 @@ function Menu(props) {
   const { level, score, records } = useContext(AppContext);
 
   const [selected, setSelected] = useStickyState('easy', 'selected');
+  // const [selectedBg, setSelectedBg] = useStickyState(1, 'selectedBg');
 
   const onValueChange = event => {
     setSelected(event.target.value);
+  };
+
+  const onValueChangeBg = event => {
+    props.setSpaceType(event.target.value);
   };
 
   // const getRecordsTable = () => {
@@ -135,6 +140,34 @@ function Menu(props) {
               <label htmlFor="hard">Hard</label>
             </div>
           </form>
+
+          {/* bg image */}
+          <p className="difficulty-lvl__heading">
+              Select theme:
+          </p>
+          <div className="difficulty-lvl__item">
+              <input
+                type="radio"
+                id="bg_image1"
+                name="bg_image1"
+                value="1"
+                checked={props.spaceType === "1"}
+                onChange={onValueChangeBg}
+              />
+              <label htmlFor="bg_image1">Theme 1</label>
+            </div>
+
+            <div className="difficulty-lvl__item">
+              <input
+                type="radio"
+                id="bg_image2"
+                name="bg_image2"
+                value="2"
+                checked={props.spaceType === "2"}
+                onChange={onValueChangeBg}
+              />
+              <label htmlFor="bg_image2">Theme 2</label>
+            </div>
         </div>
       </div>
     </>

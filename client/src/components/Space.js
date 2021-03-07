@@ -10,10 +10,10 @@ import React, {
 // import {AppContext} from '../App'
 
 // задний фон
-function Space() {
+function Space(props) {
   return (
     <>
-      <div className="sky"></div>
+      <div className={`sky sky-${props.spaceType}`}></div>
     </>
   );
 }
