@@ -50,6 +50,7 @@ const Enemy = props => {
           // console.log('after currentEnemy', idComponent)
           props.unmountChildEnemy(idComponent);
           // добавляем нам очков
+          console.log('score = ', score )
           props.changeScore(score + gameDifficultyVariables.getScoreValueIfShipKilledEnemy());
           // звук вырыва вражеского карабля
           if (isSounds) playExplosion();

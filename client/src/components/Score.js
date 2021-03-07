@@ -10,11 +10,11 @@ import React, {
 import { AppContext } from '../App';
 
 function Score() {
-  const { scoreCount } = useContext(AppContext);
+  const { score } = useContext(AppContext);
 
   return (
     <>
-      <div id="score">{scoreCount}</div>
+      <div id="score">{score}</div>
     </>
   );
 }

@@ -135,8 +135,8 @@ function App() {
   // создаем взрыв
   const didMountNewExplosion = (x, y) => {
     const randomId = makeId(10);
-    console.log('didMountNewExplosion x', x)
-    console.log('didMountNewExplosion y', y)
+    // console.log('didMountNewExplosion x', x)
+    // console.log('didMountNewExplosion y', y)
     // создаем новый взрыв
     changeExplosions([
       ...explosions,
@@ -208,7 +208,7 @@ function App() {
 
   // удаляем врага
   const unmountChildEnemy = idComponent => {
-    console.log('unmountChildEnemy after', idComponent)
+    // console.log('unmountChildEnemy after', idComponent)
     let enemyesTmp = enemyes;
     // удаляем нужного врага
     // enemyesTmp.splice(idComponent, 1);
@@ -656,7 +656,7 @@ function App() {
       <AppContext.Provider
         value={{
           lifesCount: lifes,
-          scoreCount: score,
+          score: score,
           lifeValue,
           shipX: posX,
           shipY: posY,
@@ -680,7 +680,7 @@ function App() {
       <AppContext.Provider
         value={{
           lifesCount: lifes,
-          scoreCount: score,
+          score: score,
           lifeValue,
           shipX: posX,
           shipY: posY,
@@ -704,7 +704,7 @@ function App() {
       <AppContext.Provider
         value={{
           lifesCount: lifes,
-          scoreCount: score,
+          score: score,
           lifeValue,
           shipX: posX,
           shipY: posY,
@@ -728,7 +728,7 @@ function App() {
     <AppContext.Provider
       value={{
         lifesCount: lifes,
-        scoreCount: score,
+        score: score,
         lifeValue,
         shipX: posX,
         shipY: posY,

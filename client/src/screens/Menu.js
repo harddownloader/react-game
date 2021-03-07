@@ -10,7 +10,7 @@ import useStickyState from '../utils/useStickyState'
 import { AppContext } from '../App';
 
 function Menu(props) {
-  const { level, scoreCount, records } = useContext(AppContext);
+  const { level, score, records } = useContext(AppContext);
 
   const [selected, setSelected] = useStickyState('easy', 'selected');
 
@@ -35,7 +35,7 @@ function Menu(props) {
   }
 
   const getScoreResult = () => {
-      return (<p className="sub-title" >Your score:  <span className="menu-score-result" >{scoreCount}</span></p>)
+      return (<p className="sub-title" >Your score:  <span className="menu-score-result" >{score}</span></p>)
   }
 
   const getLvlResult = () => {
