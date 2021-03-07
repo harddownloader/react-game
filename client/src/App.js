@@ -209,9 +209,12 @@ function App() {
   // удаляем врага
   const unmountChildEnemy = idComponent => {
     console.log('unmountChildEnemy after', idComponent)
-    const enemyesTmp = enemyes;
+    let enemyesTmp = enemyes;
     // удаляем нужного врага
-    enemyesTmp.splice(idComponent, 1);
+    // enemyesTmp.splice(idComponent, 1);
+    enemyesTmp = enemyesTmp.filter(function( obj ) {
+      return obj.id !== idComponent;
+  });
 
     // сохраняем новое состояние с врагами
     setEnemys(enemyesTmp);
@@ -281,62 +284,61 @@ function App() {
 
 
   // цикл проверок на сопрекосновение игровых субъектов
-  useInterval(() => {
-    // есть ли соприкосновение врагов и выстрелов карабля
-    for (let q = 0; q < enemyes.length; q++) {
-      const currentEnemy = document.getElementById(`${enemyes[q].id}EnemyNo`);
-      // console.log('before currentEnemy', enemyes[q].id)
-      const bulletsTmp = bullets;
+  // useInterval(() => {
+  //   // есть ли соприкосновение врагов и выстрелов карабля
+  //   for (let q = 0; q < enemyes.length; q++) {
+  //     const currentEnemy = document.getElementById(`${enemyes[q].id}EnemyNo`);
+  //     // console.log('before currentEnemy', enemyes[q].id)
+  //     const bulletsTmp = bullets;
 
-      // проверяем находятся ли выстрелы на месте врагов - если да, то убираем 2х и влюсуем очки
-      for (let i = 0; i < bulletsTmp.length; i++) {
-        const bulletEl = document.getElementById(`${bulletsTmp[i].id}BulletNo`);
-        // console.log(bulletEl)
-        if (currentEnemy && bulletEl) {
-          const isHit = doElsCollide(currentEnemy, bulletEl);
-          if (isHit) {
-            // alert('hit')
-            // создаем взрыв
-            // console.log('explosions x', enemyes[q].x);
-            // console.log('explosions y', enemyes[q].y);
-            // console.log('explosions x clientLeft', currentEnemy.offsetLeft);
-            // console.log('explosions y clientTop', currentEnemy.offsetTop);
-            // didMountNewExplosion(enemyes[q].x, enemyes[q].y);
-            didMountNewExplosion(currentEnemy.offsetLeft, currentEnemy.offsetTop);
-            // удаляем наш выстрел
-            unmountChildBullet(bulletsTmp[i].id);
-            // удаляем врага
-            // console.log('after currentEnemy', enemyes[q].id)
-            unmountChildEnemy(enemyes[q].id);
-            // добавляем нам очков
-            changeScore(score + gameDifficultyVariables.getScoreValueIfShipKilledEnemy());
-            // звук вырыва вражеского карабля
-            if (isSounds) playExplosion();
-          }
-        }
-      }
+  //     // проверяем находятся ли выстрелы на месте врагов - если да, то убираем 2х и влюсуем очки
+  //     for (let i = 0; i < bulletsTmp.length; i++) {
+  //       const bulletEl = document.getElementById(`${bulletsTmp[i].id}BulletNo`);
+  //       // console.log(bulletEl)
+  //       if (currentEnemy && bulletEl) {
+  //         const isHit = doElsCollide(currentEnemy, bulletEl);
+  //         if (isHit) {
+  //           // alert('hit')
+  //           // создаем взрыв
+  //           // console.log('explosions x', enemyes[q].x);
+  //           // console.log('explosions y', enemyes[q].y);
+  //           // console.log('explosions x clientLeft', currentEnemy.offsetLeft);
+  //           // console.log('explosions y clientTop', currentEnemy.offsetTop);
+  //           // didMountNewExplosion(enemyes[q].x, enemyes[q].y);
+  //           didMountNewExplosion(currentEnemy.offsetLeft, currentEnemy.offsetTop);
+  //           // удаляем наш выстрел
+  //           unmountChildBullet(bulletsTmp[i].id);
+  //           // удаляем врага
+  //           // console.log('after currentEnemy', enemyes[q].id)
+  //           unmountChildEnemy(enemyes[q].id);
+  //           // добавляем нам очков
+  //           changeScore(score + gameDifficultyVariables.getScoreValueIfShipKilledEnemy());
+  //           // звук вырыва вражеского карабля
+  //           if (isSounds) playExplosion();
+  //         }
+  //       }
+  //     }
 
-      // если ли сопрекосновение карабля с врагами
-      const ship = document.getElementById('ship');
+  //     // если ли сопрекосновение карабля с врагами
+  //     const ship = document.getElementById('ship');
 
-      if (currentEnemy && ship) {
-        const isShipOnEnemy = doElsCollide(currentEnemy, ship);
-        if (isShipOnEnemy) {
-          // создаем взрыв(пришельца)
-          // console.log('enemyes[q].x', enemyes[q].x)
-          // console.log('enemyes[q].y',  enemyes[q].y)
-          didMountNewExplosion(enemyes[q].x, enemyes[q].y);
-          // убиваем пришельца
-          unmountChildEnemy(enemyes[q].id);
-          // отничаем здовье у нашего карабля
-          changeLifeValue(lifeValue - gameDifficultyVariables.getLifeValueMinusIfShipifHitTheShip());
-        }
-      }
-    }
+  //     if (currentEnemy && ship) {
+  //       const isShipOnEnemy = doElsCollide(currentEnemy, ship);
+  //       if (isShipOnEnemy) {
+  //         // создаем взрыв(пришельца)
+  //         // console.log('enemyes[q].x', enemyes[q].x)
+  //         // console.log('enemyes[q].y',  enemyes[q].y)
+  //         didMountNewExplosion(enemyes[q].x, enemyes[q].y);
+  //         // убиваем пришельца
+  //         unmountChildEnemy(enemyes[q].id);
+  //         // отничаем здовье у нашего карабля
+  //         changeLifeValue(lifeValue - gameDifficultyVariables.getLifeValueMinusIfShipifHitTheShip());
+  //       }
+  //     }
+  //   }
 
-    // console.log('thisElement', thisElement.offsetTop)
-    return () => {};
-  }, 100);
+    
+  // }, 100);
 
   // когда меняется уровень здоровья
   useEffect(() => {
@@ -736,6 +738,8 @@ function App() {
         bullets,
         level,
         records: records,
+        gameDifficultyVariables: gameDifficultyVariables,
+        isSounds
       }}
     >
       <Space />
@@ -778,8 +782,13 @@ function App() {
           x={item.x}
           y={item.y}
           type={item.type}
-          unmountMe={unmountChildEnemy}
+          unmountChildEnemy={unmountChildEnemy}
           changeSpecialEnemy={changeSpecialEnemy}
+          unmountChildBullet={unmountChildBullet}
+          didMountNewExplosion={didMountNewExplosion}
+          playExplosion={playExplosion}
+          changeLifeValue={changeLifeValue}
+          changeScore={changeScore}
         />
       ))}
       {/* уровень */}
