@@ -19,6 +19,7 @@ $sounds_off: 'assets/images/sounds-off.svg';
 
 // colors
 $white_color: #ffffff;
+$gray_color: #66638e;
 $blue_color: #3097ff;
 $red_color: #fc297a;
 $fiolet_color: #85169f;
@@ -415,7 +416,7 @@ body {
 }
 
 .menu__heading {
-	margin-top: 120px;
+	margin-top: 60px;
 	// margin-bottom: 60px;
 }
 .menu__title {
@@ -543,4 +544,33 @@ body {
 	font-size: 20px;
 	font-family: 'Minecraft';
 	color: $white_color;
+}
+
+// guns panel
+.guns-list {
+	position: absolute;
+	bottom: 20px;
+	right: 30%;
+	font-family: 'Minecraft';
+	height: 75px;
+	width: 400px;
+	display: flex;
+}
+
+.guns-item {
+	color: $white_color;
+	border: 2px solid #fff;
+	height: 100%;
+	margin-left: 25px;
+	width: 75px;
+}
+
+.guns-item.active {
+	background-color: $yellow_color;
+	border: 5px solid $orange_color;
+	color: $gray_color;
+}
+
+.guns-item .guns-item__heading {
+	padding: 10px;
 }

@@ -39,6 +39,8 @@ import Footer from './components/Footer';
 import Level from './components/Level'
 // таймер игры
 import Timer from './components/Timer'
+// панель пушек
+import GunsPanel from './components/GunsPanel'
 
 // utils
 import makeId from './utils/generateRandomString';
@@ -82,6 +84,32 @@ function App() {
   const [timerMin, setTimerMin] = useStickyState(0, 'timerMin');
   // отображение фона
   const [spaceType, setSpaceType] = useStickyState("1", 'spaceType');
+  // панель оружия
+  const [gunsList, setGunsList] = useStickyState(
+    [
+      {
+        id: 1,
+        shots: 100,
+        active: true
+      },
+      {
+        id: 2,
+        shots: 200,
+        active: false
+      },
+      {
+        id: 3,
+        shots: 300,
+        active: false
+      },
+      {
+        id: 4,
+        shots: 400,
+        active: false
+      }
+    ],
+    'gunsList'
+  )
 
   // очки игрока
   const [score, setScore] = useStickyState(0, 'score');
@@ -292,66 +320,6 @@ function App() {
     }
   }, gameDifficultyVariables.getTimerRespawn());
 
-
-
-
-  // цикл проверок на сопрекосновение игровых субъектов
-  // useInterval(() => {
-  //   // есть ли соприкосновение врагов и выстрелов карабля
-  //   for (let q = 0; q < enemyes.length; q++) {
-  //     const currentEnemy = document.getElementById(`${enemyes[q].id}EnemyNo`);
-  //     // console.log('before currentEnemy', enemyes[q].id)
-  //     const bulletsTmp = bullets;
-
-  //     // проверяем находятся ли выстрелы на месте врагов - если да, то убираем 2х и влюсуем очки
-  //     for (let i = 0; i < bulletsTmp.length; i++) {
-  //       const bulletEl = document.getElementById(`${bulletsTmp[i].id}BulletNo`);
-  //       // console.log(bulletEl)
-  //       if (currentEnemy && bulletEl) {
-  //         const isHit = doElsCollide(currentEnemy, bulletEl);
-  //         if (isHit) {
-  //           // alert('hit')
-  //           // создаем взрыв
-  //           // console.log('explosions x', enemyes[q].x);
-  //           // console.log('explosions y', enemyes[q].y);
-  //           // console.log('explosions x clientLeft', currentEnemy.offsetLeft);
-  //           // console.log('explosions y clientTop', currentEnemy.offsetTop);
-  //           // didMountNewExplosion(enemyes[q].x, enemyes[q].y);
-  //           didMountNewExplosion(currentEnemy.offsetLeft, currentEnemy.offsetTop);
-  //           // удаляем наш выстрел
-  //           unmountChildBullet(bulletsTmp[i].id);
-  //           // удаляем врага
-  //           // console.log('after currentEnemy', enemyes[q].id)
-  //           unmountChildEnemy(enemyes[q].id);
-  //           // добавляем нам очков
-  //           changeScore(score + gameDifficultyVariables.getScoreValueIfShipKilledEnemy());
-  //           // звук вырыва вражеского карабля
-  //           if (isSounds) playExplosion();
-  //         }
-  //       }
-  //     }
-
-  //     // если ли сопрекосновение карабля с врагами
-  //     const ship = document.getElementById('ship');
-
-  //     if (currentEnemy && ship) {
-  //       const isShipOnEnemy = doElsCollide(currentEnemy, ship);
-  //       if (isShipOnEnemy) {
-  //         // создаем взрыв(пришельца)
-  //         // console.log('enemyes[q].x', enemyes[q].x)
-  //         // console.log('enemyes[q].y',  enemyes[q].y)
-  //         didMountNewExplosion(enemyes[q].x, enemyes[q].y);
-  //         // убиваем пришельца
-  //         unmountChildEnemy(enemyes[q].id);
-  //         // отничаем здовье у нашего карабля
-  //         changeLifeValue(lifeValue - gameDifficultyVariables.getLifeValueMinusIfShipifHitTheShip());
-  //       }
-  //     }
-  //   }
-
-    
-  // }, 100);
-
   // когда меняется уровень здоровья
   useEffect(() => {
     // когда уровень здоровья равен 0 - то расходуем жизнь
@@ -389,14 +357,6 @@ function App() {
         }
         const findedMinValueReacord = Math.min.apply(Math, recordsValues);
 
-        // recordsTmp.map((record) => {
-        //   if(record.recordValue === findedMinValueReacord) {
-        //     return {
-        //       recordValue: score,
-        //       recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear + " " + currentHours + ":" + currentMinutes
-        //     }
-        //   }
-        // })
         for(let i=0; i<recordsTmp.length;i++) {
           if(recordsTmp[i].recordValue === findedMinValueReacord) {
             recordsTmp[i] = {
@@ -405,12 +365,7 @@ function App() {
             }
           }
         }
-        // console.log('new record', {
-        //   recordValue: score,
-        //   recordDate: currentDayOfMonth + "-" + (currentMonth + 1) + "-" + currentYear + " " + currentHours + ":" + currentMinutes
-        // })
-        // console.log('records', records)
-        // console.log('recordsTmp', recordsTmp)
+        
         // сохраняем новый рекорд
         changeRecords(
           [
@@ -467,7 +422,7 @@ function App() {
     
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
-    if(level > 6) {
+    if(gunsList[3].active) {
       const randomId = makeId(10);
       // создаем новый выстрел
       setBullets([
@@ -479,7 +434,7 @@ function App() {
           bulletType: 4
         }
       ]);
-    } else if(level === 6) {
+    } else if(gunsList[2].active) {
       // для 3го уровня
       const randomId1 = makeId(10);
       const randomId2 = makeId(10);
@@ -506,7 +461,7 @@ function App() {
           bulletType: 3
         }
       ]);
-    } else if(level >= 3 && level < 6) {
+    } else if(gunsList[1].active) {
       const randomId1 = makeId(10);
       const randomId2 = makeId(10);
       setBullets([
@@ -524,7 +479,7 @@ function App() {
           bulletType: 2,
         }
       ]);
-    } else {
+    } else if(gunsList[0].active) {
       const randomId = makeId(10);
       // создаем новый выстрел
       setBullets([
@@ -571,6 +526,7 @@ function App() {
   /* --- keyboard --- */
   const keypressHandler = event => {
     console.log(event.code)
+    // pause
     if(event.code === 'Escape') {
       if (isPauseGame) {
         toggleIsPauseGame(false)
@@ -579,6 +535,7 @@ function App() {
       }
     }
 
+    // move
     if(event.code === 'KeyW' || event.code === 'ArrowUp') {
         console.log('up');
         setPosX(posX);
@@ -599,9 +556,51 @@ function App() {
         setPosX(posX + 20);
         setPosY(posY);
     }
+    // shooting
     if(event.code === 'Space') {
         console.log('space - fire');
         didMountNewBullet(posX, posY);
+    }
+    // set gun
+    if(event.code === 'Digit1') {
+      console.log('gun1');
+      const gunsListTmp = gunsList;
+      gunsListTmp.map(item => {
+        return (item.active = false ) 
+      })
+      gunsListTmp[0].active = true
+
+      setGunsList(gunsListTmp)
+    }
+    if(event.code === 'Digit2') {
+      console.log('gun2');
+      const gunsListTmp = gunsList;
+      gunsListTmp.map(item => {
+        return (item.active = false ) 
+      })
+      gunsListTmp[1].active = true
+
+      setGunsList(gunsListTmp)
+    }
+    if(event.code === 'Digit3') {
+      console.log('gun3');
+      const gunsListTmp = gunsList;
+      gunsListTmp.map(item => {
+        return (item.active = false ) 
+      })
+      gunsListTmp[2].active = true
+
+      setGunsList(gunsListTmp)
+    }
+    if(event.code === 'Digit4') {
+      console.log('gun4');
+      const gunsListTmp = gunsList;
+      gunsListTmp.map(item => {
+        return (item.active = false ) 
+      })
+      gunsListTmp[3].active = true
+
+      setGunsList(gunsListTmp)
     }
       
   }
@@ -850,6 +849,9 @@ function App() {
         timerMin={timerMin}
         setTimerSec={setTimerSec}
         setTimerMin={setTimerMin}
+      />
+      <GunsPanel
+        gunsList={gunsList}
       />
     </AppContext.Provider>
   );
