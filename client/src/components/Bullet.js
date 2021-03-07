@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 import useInterval from '../utils/useInterval';
-import useTimout from '../utils/useTimout';
+// import useTimout from '../utils/useTimout';
 // import useStickyState from '../utils/useStickyState'
 
 

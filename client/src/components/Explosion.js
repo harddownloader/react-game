@@ -1,6 +1,6 @@
 import React, {
   // useRef,
-  // useState,
+  useState,
   // useEffect,
   // useContext,
   // useMemo,
@@ -11,6 +11,7 @@ import useInterval from '../utils/useInterval';
 // import useStickyState from '../utils/useStickyState'
 
 function Explosion(props) {
+  // console.log('Explosion render')
   // const ExplosionX = props.x;
   // const ExplosionY = props.y;
 
@@ -18,7 +19,7 @@ function Explosion(props) {
   // const [posExplosionY, setPosExplosionY] = useStickyState(ExplosionY, 'posExplosionY');
 
   // тип картинки
-  const [typeExplosion, setTypeExplosion] = useStickyState(1, 'typeExplosion');
+  const [typeExplosion, setTypeExplosion] = useState(1);
   const changeTypeExplosion = newScore => setTypeExplosion(prev => newScore);
 
   useInterval(() => {
@@ -28,7 +29,7 @@ function Explosion(props) {
       changeTypeExplosion(typeExplosion + 1);
     } else {
       // ставинем неверный тип чтобы он быстрее скрылся, а не "ждал" доп.ренгера для удаления
-      changeTypeExplosion(typeExplosion + 1);
+      // changeTypeExplosion(typeExplosion + 1);
       // когда анимация взрыва закончилась - то удаляем компонент
       props.unmountMe();
     }

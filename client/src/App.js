@@ -135,14 +135,15 @@ function App() {
   // создаем взрыв
   const didMountNewExplosion = (x, y) => {
     const randomId = makeId(10);
-    
+    console.log('didMountNewExplosion x', x)
+    console.log('didMountNewExplosion y', y)
     // создаем новый взрыв
     changeExplosions([
       ...explosions,
       {
         id: randomId,
-        x: x,
-        y: y,
+        x,
+        y,
       },
     ]);
   };
@@ -207,6 +208,7 @@ function App() {
 
   // удаляем врага
   const unmountChildEnemy = idComponent => {
+    console.log('unmountChildEnemy after', idComponent)
     const enemyesTmp = enemyes;
     // удаляем нужного врага
     enemyesTmp.splice(idComponent, 1);
@@ -283,6 +285,7 @@ function App() {
     // есть ли соприкосновение врагов и выстрелов карабля
     for (let q = 0; q < enemyes.length; q++) {
       const currentEnemy = document.getElementById(`${enemyes[q].id}EnemyNo`);
+      // console.log('before currentEnemy', enemyes[q].id)
       const bulletsTmp = bullets;
 
       // проверяем находятся ли выстрелы на месте врагов - если да, то убираем 2х и влюсуем очки
@@ -303,6 +306,7 @@ function App() {
             // удаляем наш выстрел
             unmountChildBullet(bulletsTmp[i].id);
             // удаляем врага
+            // console.log('after currentEnemy', enemyes[q].id)
             unmountChildEnemy(enemyes[q].id);
             // добавляем нам очков
             changeScore(score + gameDifficultyVariables.getScoreValueIfShipKilledEnemy());
@@ -319,6 +323,8 @@ function App() {
         const isShipOnEnemy = doElsCollide(currentEnemy, ship);
         if (isShipOnEnemy) {
           // создаем взрыв(пришельца)
+          // console.log('enemyes[q].x', enemyes[q].x)
+          // console.log('enemyes[q].y',  enemyes[q].y)
           didMountNewExplosion(enemyes[q].x, enemyes[q].y);
           // убиваем пришельца
           unmountChildEnemy(enemyes[q].id);
