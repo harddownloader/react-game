@@ -19,6 +19,7 @@ $sounds_on: 'assets/images/sounds-on.svg';
 $sounds_off: 'assets/images/sounds-off.svg';
 
 // colors
+$white_color: #ffffff;
 $blue_color: #3097ff;
 $red_color: #fc297a;
 $fiolet_color: #85169f;
@@ -132,7 +133,7 @@ body {
 // здоровье
 .life-bar-cont {
 	position: fixed;
-	bottom: 20px;
+	bottom: 60px;
 	right: 20px;
 	width: 20px;
 	height: 220px;
@@ -507,4 +508,14 @@ body {
 .difficulty-lvl__item{
 	margin-top: 10px;
 	color: $blue_color;
+}
+
+// timer
+.timer {
+	position: absolute;
+	bottom: 20px;
+	right: 10px;
+	font-size: 20px;
+	font-family: 'Minecraft';
+	color: $white_color;
 }

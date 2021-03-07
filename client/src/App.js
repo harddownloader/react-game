@@ -37,6 +37,8 @@ import Explosion from './components/Explosion';
 import Footer from './components/Footer';
 // level
 import Level from './components/Level'
+// таймер игры
+import Timer from './components/Timer'
 
 // utils
 import makeId from './utils/generateRandomString';
@@ -75,6 +77,9 @@ function App() {
   const [lifes, setLifes] = useStickyState(0, 'lifes');
   // для изменения кол-ва жизней
   const changeLifes = count => setLifes(prev => count);
+  // таймер игры
+  const [timerSec, setTimerSec] = useStickyState(0, 'timerSec');
+  const [timerMin, setTimerMin] = useStickyState(0, 'timerMin');
 
   // очки игрока
   const [score, setScore] = useStickyState(0, 'score');
@@ -641,6 +646,8 @@ function App() {
   const startNewGame = (difficulty) => {
     console.log('isGameOver in startNewGame', isGameOver);
     setIsStarting(false)
+    setTimerSec(0)
+    setTimerMin(0)
     changeGameDifficulty(difficulty)
     changeLifes(3);
     changeScore(0);
@@ -809,6 +816,12 @@ function App() {
       ))}
       {/* уровень */}
       <Level changeLevel={changeLevel} />
+      <Timer
+        timerSec={timerSec}
+        timerMin={timerMin}
+        setTimerSec={setTimerSec}
+        setTimerMin={setTimerMin}
+      />
     </AppContext.Provider>
   );
 }

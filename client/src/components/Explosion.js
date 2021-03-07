@@ -29,7 +29,7 @@ function Explosion(props) {
       changeTypeExplosion(typeExplosion + 1);
     } else {
       // ставинем неверный тип чтобы он быстрее скрылся, а не "ждал" доп.ренгера для удаления
-      // changeTypeExplosion(typeExplosion + 1);
+      changeTypeExplosion(typeExplosion + 1);
       // когда анимация взрыва закончилась - то удаляем компонент
       props.unmountMe();
     }
