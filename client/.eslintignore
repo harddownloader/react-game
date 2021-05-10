@@ -1,0 +1,5 @@
+# Ignore built files
+dist/*
+package.json
+tsconfig.json
+webpack.config.js

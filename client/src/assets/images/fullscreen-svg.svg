@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14">
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ffffff } 
+	</style>
+	<g id="Page-1">
+		<g id="Core">
+			<g id="fullscreen">
+				<path id="Shape" fill-rule="evenodd" class="shp0" d="M2 9L2 12L5 12L5 14L0 14L0 9L2 9ZM0 5L0 0L5 0L5 2L2 2L2 5L0 5ZM12 12L12 9L14 9L14 14L9 14L9 12L12 12ZM9 0L14 0L14 5L12 5L12 2L9 2L9 0Z" />
+			</g>
+		</g>
+	</g>
+</svg>

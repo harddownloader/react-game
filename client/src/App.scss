@@ -1,0 +1,576 @@
+$sprite: 'assets/images/sprite.png';
+$space_bg1: 'assets/images/space-bg.jpg';
+$space_bg2: 'assets/images/bg2.jpg';
+// $enemy: 'assets/images/enemy.png';
+
+$planet1: 'assets/images/planet1.png';
+$planet2: 'assets/images/planet2.png';
+
+$planet3: 'assets/images/planet3.png';
+
+$asteroid1: 'assets/images/asteroid1.png';
+// $space_ship: 'assets/images/spaceship3.png';
+
+$font_url: 'assets/fonts/Minecraft/Minecraft.ttf';
+
+$fullscreen: 'assets/images/fullscreen-svg.svg';
+$sounds_on: 'assets/images/sounds-on.svg';
+$sounds_off: 'assets/images/sounds-off.svg';
+
+// colors
+$white_color: #ffffff;
+$gray_color: #66638e;
+$blue_color: #3097ff;
+$red_color: #fc297a;
+$fiolet_color: #85169f;
+$green_color: #c3ed43;
+$yellow_color: #ffdc1c;
+$orange_color: #ff8322;
+
+// html,2121
+// body {
+//   // for canvas
+//   width: 100%;
+//   height: 100%;
+//   margin: 0;
+//   padding: 0;
+  
+//   color: #fff;
+//   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// #root {
+//   width: 100%;
+//   height: 100%;
+// }
+
+// .container.space{
+//   width: 100%;
+//   height: 100%;
+//   background-image: url($spaceBg);
+// }
+
+@font-face {
+  font-family: "Minecraft";
+  src: url($font_url) format("truetype");
+}
+
+* {
+	margin:0;
+	padding: 0;
+}
+
+body {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;	
+	overflow: hidden;
+}
+
+// фон
+.sky {
+	position: absolute;
+	top: -630px; left: 0; bottom: 0; right: 0;
+	width: 100%;
+	opacity: 1;
+	
+	-webkit-animation: backdrop_roll linear 100s infinite;
+	-moz-animation: backdrop_roll linear 100s infinite;
+	-ms-animation: backdrop_roll linear 100s infinite;
+	-o-animation: backdrop_roll linear 100s infinite;
+	animation: backdrop_roll linear 100s infinite;
+}
+
+@-webkit-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@-moz-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@-ms-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@-o-keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+@keyframes backdrop_roll { from { top: -630px; } to { top: 0; } }
+
+.sky-1 {
+	background: url($space_bg1) repeat;
+}
+
+.sky-2 {
+	background: url($space_bg2) repeat;
+}
+
+
+
+// очки игрока
+#score {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	color: #fff;
+	font-family: "Minecraft";
+	font-size: 40px;
+}
+
+// уровень
+#level {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	color: #fff;
+	font-family: "Minecraft";
+	font-size: 20px;
+}
+
+// жизни
+#lifes {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	color: #fff;
+	font-size: 20px;
+}
+
+#life{
+	width: 52px;
+  height: 44px;
+  background: url($sprite) 114px -34px;
+}
+
+// здоровье
+.life-bar-cont {
+	position: fixed;
+	bottom: 60px;
+	right: 20px;
+	width: 20px;
+	height: 220px;
+	background: #222227;
+}
+
+.life-bar {
+	position: absolute;
+	width: 10px;
+	height: 200px;
+	top: 10px;
+	right: 5px;
+	background: #ccc;
+	z-index: 9999px
+}
+
+.life-bar .inside-bar {	
+	position: absolute;
+	width: 100%;
+	right: 0;
+	bottom:0;
+	background: #27ff00;
+}
+// /здоровье
+
+// карабль
+#ship {
+	position: absolute;
+	// width: 120px;
+	// height: 128px;
+	top: 70%;
+	left: 50%;
+	margin-left: -50px;
+	// background: url($sprite) 180px 157px;
+	// background-size: contain;
+	z-index: 1000;
+}
+
+.ship-type-1 {
+	width: 65px;
+	height: 70px;
+	background: url($sprite) 565px 102px;
+}
+
+.ship-type-2 {
+	width: 53px;
+	height: 90px;
+	background: url($sprite) 472px 118px;
+}
+
+.ship-type-3 {
+	width: 53px;
+	height: 74px;
+	background: url($sprite) 386px 112px;
+}
+
+.ship-type-4 {
+	width: 88px;
+	height: 103px;
+	background: url($sprite) 304px 130px;
+}
+
+.ship-type-5 {
+	width: 120px;
+	height: 114px;
+	background: url($sprite) 180px 142px;
+}
+
+.explode {
+	position: absolute;
+	top:  50%;
+	left: 50%;
+	width: 120px;
+	height: 180px;
+	z-index: 2000;
+}
+
+.palyerExplode {
+	position: absolute;
+	width: 70px;
+	height: 100px;
+	top:  50%;
+	left: 50%;
+	z-index: 2000;
+}
+
+.palyerExplode img, .explode img {
+	width: 100%;
+	height: auto;
+}
+
+.bullet {
+	position: absolute;
+	margin-left: -5px;
+	z-index: 1000;
+	// transition: all 0.1s ease;
+}
+
+.bullet-type-1 {
+	width: 8px;
+	height: 8px;
+	border-radius: 5px;
+	// background: url($sprite) 113px 214px;
+	background-color: $blue_color;
+}
+.bullet-type-2 {
+	width: 8px;
+	height: 16px;
+	background-color: $red_color;
+}
+.bullet-type-3 {
+	width: 8px;
+	height: 16px;
+	background-color: $fiolet_color;
+}
+.bullet-type-4 {
+	width: 19px;
+	height: 19px;
+	background: url($sprite) 80px 220px;
+}
+
+
+.enemy-bullet {
+	position: absolute;
+	width: 5px;
+	height: 5px;	
+	border-radius: 3px;
+	background: #c3ed43;
+	z-index: 900;
+}
+
+// враг
+.enemy {
+	position: absolute;
+	width: 58px;
+	height: 61px;
+	top: -50px;
+	left: 50%;
+	// background: url($sprite) -64px 512px;
+	z-index: 950;
+	transition: all 0.5s ease;
+}
+
+// тип врагов
+.enemy-type-1 {
+	background: url($sprite) -64px 512px;
+}
+
+.enemy-type-2 {
+	background: url($sprite) -64px 413px;
+}
+
+.enemy-type-3 {
+	background: url($sprite) -64px 319px;
+}
+
+.enemy-type-4 {
+	background: url($sprite) -64px 225px;
+}
+
+.enemy-type-5 {
+	background: url($sprite) -146px 512px;
+}
+
+.enemy-type-6 {
+	background: url($sprite) -146px 413px;
+}
+
+.enemy-type-7 {
+	background: url($sprite) -146px 319px;
+}
+
+.enemy-type-8 {
+	background: url($sprite) -146px 225px;
+}
+
+// анимация взрыва
+.explosion {
+	position: absolute;
+	width: 58px;
+	height: 61px;
+	z-index: 951;
+}
+
+.explosion-part-1 {
+	width: 54px;
+	height: 48px;
+	background: url($sprite) 363px 428px;
+}
+.explosion-part-2 {
+	width: 67px;
+	height: 71px;
+	background: url($sprite) 367px 361px;
+}
+.explosion-part-3 {
+	width: 103px;
+	height: 102px;
+	background: url($sprite) 388px 264px;
+}
+
+.small-star {
+	position: absolute;
+	width: 2px;
+	height: 2px;
+	border-radius: 1px;	
+	left: 0; top: -50px;
+	background: #fff;
+	z-index: 1;
+}
+
+.planet {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;	
+	left: 0; top: -50px;
+	background: linear-gradient(to right, #2d2d2d 20%,#ccc 100%);
+	z-index: 10;
+}
+
+.moon {
+	position: absolute;
+	width: 500px;
+	height: 500px;
+	border-radius: 250px;	
+	left: 0; top: -500px;
+	z-index: 100;
+	background: url($planet1) no-repeat center; 
+}
+
+.huge-planet {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	border-radius: 75px;	
+	left: 0; top: -200px;
+	background: url($planet2) no-repeat;
+	z-index: 50;
+}
+
+.exp-planet {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	border-radius: 75px;	
+	left: 0; top: -200px;
+	background: url($planet3) no-repeat;
+	z-index: 50;
+}
+
+
+.asteroid {
+	position: absolute;
+	width: 100px;
+	height: 65px;
+	left: 0; top: -65px;
+	z-index: 100;
+	background: url($asteroid1) no-repeat center; 
+}
+
+// menu
+#menu {
+	position: absolute;
+	color: #fff;
+	font-family: "Minecraft";
+	width: 100%;
+	height: 100%;
+	display: block;
+	text-align: center;
+}
+
+.menu__heading {
+	margin-top: 60px;
+	// margin-bottom: 60px;
+}
+.menu__title {
+	text-align: center;
+}
+#menu .sub-title {
+	margin: 10px 0px;
+}
+
+.menu__wrap {
+	width: 100%;
+}
+.menu__btn {
+	padding: 15px;
+	margin-bottom: 20px;
+}
+.menu-score-result {
+	color: $red_color;
+}
+.menu-lvl-result{
+	color: $fiolet_color;
+}
+
+
+// records
+.table-records{}
+.records-title{}
+.record-item{}
+.record-number{
+
+}
+.record-date{
+	color: $blue_color;
+}
+.record-score{
+	color: $red_color;
+}
+
+// fullscreen
+.fullscreen {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	background: url($fullscreen);
+	background-size: contain;
+}
+
+// sounds
+.sounds {
+	position: absolute;
+	bottom: 0px;
+	left: 50px;
+	width: 50px;
+	height: 50px;
+}
+
+.sounds-on {
+	background: url($sounds_on);
+	background-size: contain;
+}
+
+.sounds-off {
+	background: url($sounds_off);
+	background-size: contain;
+}
+// volume control
+.sounds-volume {
+	position: absolute;
+	bottom: 0;
+	#sounds-volume-ranger {
+		position: absolute;
+		bottom: 18px;
+		left: 100px;
+	}
+
+	#sounds-volume-ranger.hide {
+		display: none;
+	}
+}
+
+// footer
+.footer {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	background-color: #fff;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.footer .footer__link {
+	height: 100%;
+}
+
+.footer .footer__link.github-link {
+	height: auto;
+	color: #000;
+	font-family: 'Minecraft';
+	text-decoration: none;
+	padding: 15px;
+}
+
+.footer .footer__logo{
+	height: 100%;
+	border-left: 1px solid #000;
+}
+
+// choose lvl
+.difficulty-lvl__heading{
+	margin-top: 10px;
+}
+.difficulty-lvl__item{
+	margin-top: 10px;
+	color: $blue_color;
+}
+
+// timer
+.timer {
+	position: absolute;
+	bottom: 20px;
+	right: 10px;
+	font-size: 20px;
+	font-family: 'Minecraft';
+	color: $white_color;
+}
+
+// guns panel
+.guns-list {
+	position: absolute;
+	bottom: 20px;
+	right: 30%;
+	font-family: 'Minecraft';
+	height: 75px;
+	width: 400px;
+	display: flex;
+}
+
+.guns-item {
+	color: $white_color;
+	border: 2px solid #fff;
+	height: 100%;
+	margin-left: 25px;
+	width: 75px;
+}
+
+.guns-item.active {
+	background-color: $yellow_color;
+	border: 5px solid $orange_color;
+	color: $gray_color;
+}
+
+.guns-item .guns-item__heading {
+	padding: 10px;
+}
