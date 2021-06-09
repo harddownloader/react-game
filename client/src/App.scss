@@ -8,6 +8,8 @@ $planet2: 'assets/images/planet2.png';
 
 $planet3: 'assets/images/planet3.png';
 
+$boss_img: 'assets/images/boss.png';
+
 $asteroid1: 'assets/images/asteroid1.png';
 // $space_ship: 'assets/images/spaceship3.png';
 
@@ -573,4 +575,15 @@ body {
 
 .guns-item .guns-item__heading {
 	padding: 10px;
+}
+
+// boss
+.boss {
+	position: absolute;
+	top: 0;
+	right: 30%;
+	width: 262px;
+	height: 215px;
+	background: url($boss_img) no-repeat 50% 50%;
+	background-size: contain;
 }
