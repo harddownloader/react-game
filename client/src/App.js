@@ -41,6 +41,8 @@ import Level from './components/Level'
 import Timer from './components/Timer'
 // панель пушек
 import GunsPanel from './components/GunsPanel'
+// boss
+import Boss from './components/Boss'
 
 // utils
 import makeId from './utils/generateRandomString';
@@ -125,6 +127,7 @@ function App() {
   const [posBulletX, setPosBulletX] = useStickyState(0, 'posBulletX');
   const [posBulletY, setPosBulletY] = useStickyState(0, 'posBulletY');
   const [bullets, setBullets] = useStickyState([], 'bullets');
+  // const [bullets, setBullets] = useState([], 'bullets');
 
   // музыка
   const [isSounds, setIsSounds] = useStickyState(false, 'isSounds');
@@ -723,7 +726,12 @@ function App() {
           spaceType={spaceType}
           setSpaceType={setSpaceType}
         />
-        <Menu title="SPACE BATTLE" startNewGame={startNewGame} />
+        <Menu
+          title="SPACE BATTLE"
+          startNewGame={startNewGame}
+          spaceType={spaceType}
+          setSpaceType={setSpaceType}
+        />
         <Fullscreen />
         <Sounds
           toggleIsSounds={toggleIsSounds}
@@ -853,6 +861,7 @@ function App() {
       <GunsPanel
         gunsList={gunsList}
       />
+      {/* <Boss /> */}
     </AppContext.Provider>
   );
 }
