@@ -48,7 +48,7 @@ import Boss from './components/Boss'
 import makeId from './utils/generateRandomString';
 import getRandomInt from './utils/generateRandomNumber';
 import useInterval from './utils/useInterval';
-import useStickyState from './utils/useStickyState'
+// import useStickyState from './utils/useStickyState'
 import getRandomArbitrary from './utils/generateRandomNumberArbitrary';
 import doElsCollide from './utils/isElementOnAnoterElement';
 
@@ -63,77 +63,74 @@ export const AppContext = React.createContext();
 
 function App() {
   // статус игры
-  const [isGameOver, setIsGameOver] = useStickyState(null, 'isGameOver');
+  const [isGameOver, setIsGameOver] = useState(null)
   // для изменения статуса игры
   const changeIsGameOver = status => setIsGameOver(prev => status);
   // переменная для обозначния что игру только что запустили и еще не играми
-  const [isStarting, setIsStarting] = useStickyState(true, 'isStarting');
+  const [isStarting, setIsStarting] = useState(true)
   // сложность игры
-  const [gameDifficulty, setGameDifficulty] = useStickyState(null, 'gameDifficulty');
+  const [gameDifficulty, setGameDifficulty] = useState(null)
   const changeGameDifficulty = status => setGameDifficulty(prev => status);
   // статус паузы
-  const [isPauseGame, setIsPauseGame] = useStickyState(false, 'isPauseGame');
+  const [isPauseGame, setIsPauseGame] = useState(false)
   const toggleIsPauseGame = status => setIsPauseGame(prev => status);
   // сипсок рекордов
-  const [records, setRecords] = useStickyState([], 'records');
+  const [records, setRecords] = useState([])
   const changeRecords = newState => setRecords(prev => newState);
   // кол-во жизней
-  const [lifes, setLifes] = useStickyState(0, 'lifes');
+  const [lifes, setLifes] = useState(0)
   // для изменения кол-ва жизней
   const changeLifes = count => setLifes(prev => count);
   // таймер игры
-  const [timerSec, setTimerSec] = useStickyState(0, 'timerSec');
-  const [timerMin, setTimerMin] = useStickyState(0, 'timerMin');
+  const [timerSec, setTimerSec] = useState(0)
+  const [timerMin, setTimerMin] = useState(0)
   // отображение фона
-  const [spaceType, setSpaceType] = useStickyState("1", 'spaceType');
+  const [spaceType, setSpaceType] = useState("1")
   // панель оружия
-  const [gunsList, setGunsList] = useStickyState(
-    [
-      {
-        id: 1,
-        shots: 100,
-        active: true
-      },
-      {
-        id: 2,
-        shots: 200,
-        active: false
-      },
-      {
-        id: 3,
-        shots: 300,
-        active: false
-      },
-      {
-        id: 4,
-        shots: 400,
-        active: false
-      }
-    ],
-    'gunsList'
-  )
+  const [gunsList, setGunsList] = useState([
+    {
+      id: 1,
+      shots: 100,
+      active: true
+    },
+    {
+      id: 2,
+      shots: 200,
+      active: false
+    },
+    {
+      id: 3,
+      shots: 300,
+      active: false
+    },
+    {
+      id: 4,
+      shots: 400,
+      active: false
+    }
+  ])
+
 
   // очки игрока
-  const [score, setScore] = useStickyState(0, 'score');
+  const [score, setScore] = useState(0)
   // для изменения кол-ва жизней
   const changeScore = newScore => setScore(prev => newScore);
 
   // уровень жизни(полоска) - 200px
-  const [lifeValue, setLifeValue] = useStickyState(0, 'lifeValue');
+  const [lifeValue, setLifeValue] = useState(0)
   // для изменения уровеня жизни(полоска)
   const changeLifeValue = count => setLifeValue(prev => count);
 
   // координаты выстрела нашего ship
-  const [posBulletX, setPosBulletX] = useStickyState(0, 'posBulletX');
-  const [posBulletY, setPosBulletY] = useStickyState(0, 'posBulletY');
-  const [bullets, setBullets] = useStickyState([], 'bullets');
-  // const [bullets, setBullets] = useState([], 'bullets');
+  const [posBulletX, setPosBulletX] = useState(0)
+  const [posBulletY, setPosBulletY] = useState(0)
+  const [bullets, setBullets] = useState([], 'bullets');
 
   // музыка
-  const [isSounds, setIsSounds] = useStickyState(false, 'isSounds');
+  const [isSounds, setIsSounds] = useState(false)
   const toggleIsSounds = status => setIsSounds(prev => status);
   // уровень громкости
-  const [soundValue, setSoundValue] = useStickyState(0, 'soundValue');
+  const [soundValue, setSoundValue] = useState(0)
   const changeSoundValue = newVal => setSoundValue(prev => newVal);
 
   /* --- sounds --- */
@@ -166,13 +163,13 @@ function App() {
 
 
   /* --- lvl --- */
-  const [level, setLevel] = useStickyState(1, "level");
+  const [level, setLevel] = useState(1)
   const changeLevel = newState => setLevel(prev => newState);
   /* --- /lvl --- */
 
 
   /* --- взрывы --- */
-  const [explosions, setExplosions] = useStickyState([], 'explosions');
+  const [explosions, setExplosions] = useState([])
   const changeExplosions = newState => setExplosions(prev => newState);
 
   // создаем взрыв
@@ -205,7 +202,7 @@ function App() {
   /* ---- враги ----- */
   // враги
 
-  const [enemyes, setEnemys] = useStickyState([], 'enemyes');
+  const [enemyes, setEnemys] = useState([])
   // const changeEmenyes = (newState) => {prev => newState}
 
   // обновляем координаты врага (вызывается из дочернего компонента - т.е. компонента врага)
@@ -395,8 +392,8 @@ function App() {
 
   /* ---- крабль ---- */
   // координаты карабля
-  const [posX, setPosX] = useStickyState(0, 'posX');
-  const [posY, setPosY] = useStickyState(0, 'posY');
+  const [posX, setPosX] = useState(0)
+  const [posY, setPosY] = useState(0)
 
   /* --- выстрелы нашего карабля --- */
 

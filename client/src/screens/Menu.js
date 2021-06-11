@@ -1,18 +1,18 @@
 import React, {
   // useRef,
-  // useState,
+  useState,
   // useEffect,
   useContext,
   // useMemo,
   // useReducer,
 } from 'react';
-import useStickyState from '../utils/useStickyState'
+// import useStickyState from '../utils/useStickyState'
 import { AppContext } from '../App';
 
 function Menu(props) {
   const { level, score, records } = useContext(AppContext);
 
-  const [selected, setSelected] = useStickyState('easy', 'selected');
+  const [selected, setSelected] = useState('easy')
   // const [selectedBg, setSelectedBg] = useStickyState(1, 'selectedBg');
 
   const onValueChange = event => {

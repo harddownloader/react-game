@@ -1,6 +1,6 @@
 import React, {
   // useRef,
-  // useState,
+  useState,
   useEffect,
   useContext,
   // useMemo,
@@ -8,14 +8,14 @@ import React, {
 } from 'react';
 
 import { AppContext } from '../App';
-import useStickyState from '../utils/useStickyState'
+// import useStickyState from '../utils/useStickyState'
 
 
 // карабль
 function Spaceship() {
   const { shipX, shipY, level } = useContext(AppContext);
 
-  const [typeShip, setTypeShip] = useStickyState(1, 'typeShip');
+  const [typeShip, setTypeShip] = useState(1)
   const changeTypeShip = newType => setTypeShip(prev => newType);
 
   useEffect(() => {
