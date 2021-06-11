@@ -9,7 +9,7 @@ import React, {
 // для музыки
 import useSound from 'use-sound';
 // import jQuery from 'jquery';
-import './App.scss';
+// import './App.module.scss';
 
 // фон
 import Space from './components/Space';
@@ -53,11 +53,11 @@ import getRandomArbitrary from './utils/generateRandomNumberArbitrary';
 import doElsCollide from './utils/isElementOnAnoterElement';
 
 // sounds
-import soundBgSound from './assets/audio/bg.mp3';
-import laserSound from './assets/audio/laser.mp3'; // shot
-import gameOverSound from './assets/audio/warp.mp3'; // game over
-import explosionSound from './assets/audio/explosion.mp3'; // взрыв вражеского карабля
-import clickSound from './assets/audio/click.mp3'
+import soundBgSound from '../public/assets/audio/bg.mp3';
+import laserSound from '../public/assets/audio/laser.mp3'; // shot
+import gameOverSound from '../public/assets/audio/warp.mp3'; // game over
+import explosionSound from '../public/assets/audio/explosion.mp3'; // взрыв вражеского карабля
+import clickSound from '../public/assets/audio/click.mp3'
 
 export const AppContext = React.createContext();
 
@@ -278,7 +278,7 @@ function App() {
 
     // какое максимальное кол-во врагов может быть на экране в момент
     getMaxEnemyCount:function() {
-    
+
       if (gameDifficulty === 'easy') {
         return 5;
       } else if (gameDifficulty === 'medium') {
@@ -286,7 +286,7 @@ function App() {
       } else if (gameDifficulty === 'hard') {
         return 7;
       }
-      
+
     },
 
     // сколько очков получаем за убитого врага
@@ -368,7 +368,7 @@ function App() {
             }
           }
         }
-        
+
         // сохраняем новый рекорд
         changeRecords(
           [
@@ -387,7 +387,7 @@ function App() {
           ]
         );
       }
-      
+
     }
   }, [lifes]);
 
@@ -403,7 +403,7 @@ function App() {
   const changeSpecialBullet = (bulletId, newBulletData) => {
     const bulletsTmp = bullets;
     for(let i=0; i<bulletsTmp.length; i++) {
-      
+
       if(bulletsTmp[i].id == bulletId) {
         bulletsTmp[i].x = newBulletData.x;
         bulletsTmp[i].y = newBulletData.y;
@@ -413,7 +413,7 @@ function App() {
         unmountChildBullet(bulletId);
       }
     }
-    
+
     // сохраняем обновленный массив выстрелов
     setBullets([
       ...bulletsTmp
@@ -422,7 +422,7 @@ function App() {
 
   // добавляем новый выстрел в список выстрелов
   const didMountNewBullet = (x, y) => {
-    
+
     // console.log('randomId', randomId)
     // console.log('posBulletX', x)
     if(gunsList[3].active) {
@@ -495,7 +495,7 @@ function App() {
         }
       ]);
     }
-    
+
     // создаем звук выстрела
     if (isSounds) playLaser();
   };
@@ -569,7 +569,7 @@ function App() {
       console.log('gun1');
       const gunsListTmp = gunsList;
       gunsListTmp.map(item => {
-        return (item.active = false ) 
+        return (item.active = false )
       })
       gunsListTmp[0].active = true
 
@@ -579,7 +579,7 @@ function App() {
       console.log('gun2');
       const gunsListTmp = gunsList;
       gunsListTmp.map(item => {
-        return (item.active = false ) 
+        return (item.active = false )
       })
       gunsListTmp[1].active = true
 
@@ -589,7 +589,7 @@ function App() {
       console.log('gun3');
       const gunsListTmp = gunsList;
       gunsListTmp.map(item => {
-        return (item.active = false ) 
+        return (item.active = false )
       })
       gunsListTmp[2].active = true
 
@@ -599,13 +599,13 @@ function App() {
       console.log('gun4');
       const gunsListTmp = gunsList;
       gunsListTmp.map(item => {
-        return (item.active = false ) 
+        return (item.active = false )
       })
       gunsListTmp[3].active = true
 
       setGunsList(gunsListTmp)
     }
-      
+
   }
   /* --- /keyboard --- */
 
@@ -642,7 +642,7 @@ function App() {
       // если мы в игре
       didMountNewBullet(event.clientX, event.clientY);
     }
-    
+
   };
   /* --- /ship--- */
 
@@ -848,6 +848,7 @@ function App() {
           playExplosion={playExplosion}
           changeLifeValue={changeLifeValue}
           changeScore={changeScore}
+          playExplosion={playExplosion}
         />
       ))}
       {/* уровень */}

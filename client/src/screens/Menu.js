@@ -23,18 +23,6 @@ function Menu(props) {
     props.setSpaceType(event.target.value);
   };
 
-  // const getRecordsTable = () => {
-  //   if (records.length > 1) {
-  //     records.map((item, index) => {
-  //       return (<p className="record-item">{index}. {item.recordValue}</p>)
-  //     })
-  //   } else {
-  //     return (<p className="record-item">no records yet...</p>);
-  //   }
-  // }
-  
-  
-
   const getTextToContinueGame = () => {
     return (<p className="sub-title" >Press "Esc" to continue game</p>)
   }
@@ -63,9 +51,6 @@ function Menu(props) {
     }
   }
 
-  
-
-
   return (
     <>
       <div id="menu">
@@ -75,8 +60,6 @@ function Menu(props) {
           {getSecondSubTitle()}
         </div>
 
-        
-
         <div className="menu__wrap">
           <button className="menu__btn" onClick={e => props.startNewGame(selected)}>
             New Game
@@ -84,7 +67,7 @@ function Menu(props) {
 
           <div className="table-records">
             <h3 className="records-title">Top 5 records:</h3>
-             
+
             {records.length >= 1 ?
             records.map((item, index) => {
               return (

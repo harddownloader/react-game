@@ -49,3 +49,6 @@ npm-debug.log
 .DS_Store
 
 .env
+
+# ssr
+.next

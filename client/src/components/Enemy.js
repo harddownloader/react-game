@@ -36,13 +36,7 @@ const Enemy = props => {
       if (currentEnemy && bulletEl) {
         const isHit = doElsCollide(currentEnemy, bulletEl);
         if (isHit) {
-          // alert('hit')
           // создаем взрыв
-          // console.log('explosions x', enemyes[q].x);
-          // console.log('explosions y', enemyes[q].y);
-          // console.log('explosions x clientLeft', currentEnemy.offsetLeft);
-          // console.log('explosions y clientTop', currentEnemy.offsetTop);
-          // didMountNewExplosion(enemyes[q].x, enemyes[q].y);
           props.didMountNewExplosion(currentEnemy.offsetLeft, currentEnemy.offsetTop);
           // удаляем наш выстрел
           props.unmountChildBullet(bulletsTmp[i].id);
@@ -53,7 +47,9 @@ const Enemy = props => {
           console.log('score = ', score )
           props.changeScore(score + gameDifficultyVariables.getScoreValueIfShipKilledEnemy());
           // звук вырыва вражеского карабля
-          if (isSounds) playExplosion();
+          if (isSounds) {
+            props.playExplosion();
+          }
         }
       }
     }
@@ -65,8 +61,6 @@ const Enemy = props => {
       const isShipOnEnemy = doElsCollide(currentEnemy, ship);
       if (isShipOnEnemy) {
         // создаем взрыв(пришельца)
-        // console.log('enemyes[q].x', enemyes[q].x)
-        // console.log('enemyes[q].y',  enemyes[q].y)
         props.didMountNewExplosion(props.x, props.y);
         // убиваем пришельца
         props.unmountChildEnemy(idComponent);
@@ -79,11 +73,10 @@ const Enemy = props => {
 
   // цикл анимации движения врага
   useInterval(() => {
-    
+
     const outSideY = window.innerHeight + 10;
     const outSideXmax = window.innerWidth + 30;
-    // const outSideXmin = window.innerWidth - EnemyX;
-    // console.log('x outside', EnemyX < 0)
+
     // если выстрел ушел за горизонт - удаляем его
     if (EnemyY > outSideY || EnemyX > outSideXmax || EnemyX < 0) {
       // console.log('unmound enemy')
@@ -91,23 +84,18 @@ const Enemy = props => {
     }
 
     const needNewY = props.y + 20;
-    
+
     // случайны "+" или "-", от случайного числа
     const getBooleanPlusOrMinus = getRandomArbitrary(0, 1);
     if (getBooleanPlusOrMinus) {
       // если true - то + 3px
-      // setPosEnemyX(posEnemyX + getRandomArbitrary(0, 3));
       props.changeSpecialEnemy(idComponent, {
         x: (EnemyX + getRandomArbitrary(0, 60)),
         y: needNewY
       })
-      // console.log('changeSpecialEnemy', {
-      //   x: (EnemyX + getRandomArbitrary(0, 15)),
-      //   y: needNewY
-      // })
+
     } else {
       // если false - то - 3px
-      // setPosEnemyX(posEnemyX - getRandomArbitrary(0, 3));
       props.changeSpecialEnemy(idComponent, {
         x: (EnemyX - getRandomArbitrary(0, 60)),
         y: needNewY

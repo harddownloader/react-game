@@ -1,23 +1,23 @@
-$sprite: 'assets/images/sprite.png';
-$space_bg1: 'assets/images/space-bg.jpg';
-$space_bg2: 'assets/images/bg2.jpg';
-// $enemy: 'assets/images/enemy.png';
+$sprite: '../public/assets/images/sprite.png';
+$space_bg1: '../public/assets/images/space-bg.jpg';
+$space_bg2: '../public/assets/images/bg2.jpg';
+// $enemy: '../public/assets/images/enemy.png';
 
-$planet1: 'assets/images/planet1.png';
-$planet2: 'assets/images/planet2.png';
+$planet1: '../public/assets/images/planet1.png';
+$planet2: '../public/assets/images/planet2.png';
 
-$planet3: 'assets/images/planet3.png';
+$planet3: '../public/assets/images/planet3.png';
 
-$boss_img: 'assets/images/boss.png';
+$boss_img: '../public/assets/images/boss.png';
 
-$asteroid1: 'assets/images/asteroid1.png';
-// $space_ship: 'assets/images/spaceship3.png';
+$asteroid1: '../public/assets/images/asteroid1.png';
+// $space_ship: '../public/assets/images/spaceship3.png';
 
-$font_url: 'assets/fonts/Minecraft/Minecraft.ttf';
+$font_url: '../public/assets/fonts/Minecraft/Minecraft.ttf';
 
-$fullscreen: 'assets/images/fullscreen-svg.svg';
-$sounds_on: 'assets/images/sounds-on.svg';
-$sounds_off: 'assets/images/sounds-off.svg';
+$fullscreen: '../public/assets/images/fullscreen-svg.svg';
+$sounds_on: '../public/assets/images/sounds-on.svg';
+$sounds_off: '../public/assets/images/sounds-off.svg';
 
 // colors
 $white_color: #ffffff;
@@ -36,7 +36,7 @@ $orange_color: #ff8322;
 //   height: 100%;
 //   margin: 0;
 //   padding: 0;
-  
+
 //   color: #fff;
 //   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 
@@ -73,7 +73,7 @@ body {
 	top: 0;
 	left: 0;
 	right: 0;
-	bottom: 0;	
+	bottom: 0;
 	overflow: hidden;
 }
 
@@ -83,7 +83,7 @@ body {
 	top: -630px; left: 0; bottom: 0; right: 0;
 	width: 100%;
 	opacity: 1;
-	
+
 	-webkit-animation: backdrop_roll linear 100s infinite;
 	-moz-animation: backdrop_roll linear 100s infinite;
 	-ms-animation: backdrop_roll linear 100s infinite;
@@ -162,7 +162,7 @@ body {
 	z-index: 9999px
 }
 
-.life-bar .inside-bar {	
+.life-bar .inside-bar {
 	position: absolute;
 	width: 100%;
 	right: 0;
@@ -271,7 +271,7 @@ body {
 .enemy-bullet {
 	position: absolute;
 	width: 5px;
-	height: 5px;	
+	height: 5px;
 	border-radius: 3px;
 	background: #c3ed43;
 	z-index: 900;
@@ -350,7 +350,7 @@ body {
 	position: absolute;
 	width: 2px;
 	height: 2px;
-	border-radius: 1px;	
+	border-radius: 1px;
 	left: 0; top: -50px;
 	background: #fff;
 	z-index: 1;
@@ -360,7 +360,7 @@ body {
 	position: absolute;
 	width: 20px;
 	height: 20px;
-	border-radius: 10px;	
+	border-radius: 10px;
 	left: 0; top: -50px;
 	background: linear-gradient(to right, #2d2d2d 20%,#ccc 100%);
 	z-index: 10;
@@ -370,17 +370,17 @@ body {
 	position: absolute;
 	width: 500px;
 	height: 500px;
-	border-radius: 250px;	
+	border-radius: 250px;
 	left: 0; top: -500px;
 	z-index: 100;
-	background: url($planet1) no-repeat center; 
+	background: url($planet1) no-repeat center;
 }
 
 .huge-planet {
 	position: absolute;
 	width: 200px;
 	height: 200px;
-	border-radius: 75px;	
+	border-radius: 75px;
 	left: 0; top: -200px;
 	background: url($planet2) no-repeat;
 	z-index: 50;
@@ -390,7 +390,7 @@ body {
 	position: absolute;
 	width: 200px;
 	height: 200px;
-	border-radius: 75px;	
+	border-radius: 75px;
 	left: 0; top: -200px;
 	background: url($planet3) no-repeat;
 	z-index: 50;
@@ -403,7 +403,7 @@ body {
 	height: 65px;
 	left: 0; top: -65px;
 	z-index: 100;
-	background: url($asteroid1) no-repeat center; 
+	background: url($asteroid1) no-repeat center;
 }
 
 // menu
