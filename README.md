@@ -3,7 +3,8 @@
 ## React + SSR(NextJS)
 
 
-![Image of game](https://i.ibb.co/WHbQnQK/react-game.gif)
+![react-game](https://user-images.githubusercontent.com/55257833/121747977-e19cd880-cb10-11eb-9696-c764b01748c1.gif)
+
 
 ### Control:
 * WASD/Up, Down, Left, Right/mouse -  ship control
