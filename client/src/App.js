@@ -8,8 +8,7 @@ import React, {
 } from 'react';
 // для музыки
 import useSound from 'use-sound';
-// import jQuery from 'jquery';
-// import './App.module.scss';
+
 
 // фон
 import Space from './components/Space';
