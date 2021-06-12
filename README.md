@@ -10,6 +10,9 @@
 * WASD/Up, Down, Left, Right/mouse -  ship control
 * spase/mouse click - attack
 * 1,2,3,4 - choice of weapons
+* Esc - pause
+* Esc(pause screen) - return to game
+
 
 ### The game includes:
 1. lifes and health bar
