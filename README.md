@@ -1,4 +1,4 @@
-# react-game
+# Spaceships Game
 
 ## React + SSR(NextJS)
 
